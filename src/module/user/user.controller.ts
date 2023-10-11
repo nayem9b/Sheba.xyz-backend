@@ -2,7 +2,7 @@ import { Request, RequestHandler, Response } from "express";
 import httpStatus from "http-status";
 import sendResponse from "../../shared/sendResponse";
 import catchAsync from "../../shared/catchAsync";
-import { signUpUserTODB } from "./user.service";
+import { getAllUsersFromDB, loginUserToDB, signUpUserTODB } from "./user.service";
 
 export const signUpUserController: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -17,3 +17,34 @@ export const signUpUserController: RequestHandler = catchAsync(
     });
   }
 );
+
+export const loginUser = catchAsync(async (req: Request, res: Response) => {
+  const { ...loginData } = req.body;
+  const result = await loginUserToDB(loginData);
+  console.log(result?.accessToken, result?.refreshToken);
+  const accessToken = result?.accessToken;
+
+  const refreshToken = result?.refreshToken;
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User logged in successfully",
+    token: accessToken,
+  });
+});
+
+export const getAllUsersController: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllUsersFromDB();
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Users fetched successfully !",
+      data: result,
+    });
+  }
+);
+
+
