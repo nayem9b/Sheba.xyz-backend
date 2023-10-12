@@ -23,6 +23,32 @@ model User {
   @@map("user")
 }
 
+model Category {
+  id       String     @id @default(uuid())
+  title    String
+  Services Services[]
+
+  @@map("category")
+}
+
+model Services {
+  id         String   @id @default(uuid())
+  name       String
+  price      String
+  details    String
+  image      String
+  categoryId String
+  rating     String
+  category   Category @relation(fields: [categoryId], references: [id])
+}
+
+model ReviewAndRating {
+  id        String @id @default(uuid())
+  review    String
+  rating    Int    @default(5)
+  serviceId String
+}
+
 enum Role {
   superadmin
   admin
