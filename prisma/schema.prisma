@@ -42,6 +42,7 @@ model Services {
   category        Category          @relation(fields: [categoryId], references: [id])
   ReviewAndRating ReviewAndRating[]
   Booking         Booking[]
+  MyCart          MyCart[]
 
   @@map("services")
 }
@@ -55,6 +56,16 @@ model Booking {
   createdAt  DateTime @default(now())
 
   @@map("booking")
+}
+
+model MyCart {
+  id         String   @id @default(uuid())
+  userId     String
+  servicesId String
+  createdAt  DateTime @default(now())
+  service    Services @relation(fields: [servicesId], references: [id])
+
+  @@map("myCart")
 }
 
 model ReviewAndRating {
@@ -76,4 +87,5 @@ enum Role {
 enum Status {
   pending
   delivered
+  canceled
 }
