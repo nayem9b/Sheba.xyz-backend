@@ -32,21 +32,27 @@ model Category {
 }
 
 model Services {
-  id         String   @id @default(uuid())
-  name       String
-  price      String
-  details    String
-  image      String
-  categoryId String
-  rating     String
-  category   Category @relation(fields: [categoryId], references: [id])
+  id              String            @id @default(uuid())
+  name            String
+  price           String
+  details         String
+  image           String
+  categoryId      String
+  rating          String
+  category        Category          @relation(fields: [categoryId], references: [id])
+  ReviewAndRating ReviewAndRating[]
+
+  @@map("services")
 }
 
 model ReviewAndRating {
-  id        String @id @default(uuid())
-  review    String
-  rating    Int    @default(5)
-  serviceId String
+  id         String   @id @default(uuid())
+  review     String
+  rating     Int      @default(5)
+  service    Services @relation(fields: [servicesId], references: [id])
+  servicesId String
+
+  @@map("reviews")
 }
 
 enum Role {
