@@ -88,4 +88,6 @@ enum Status {
   pending
   delivered
   canceled
+  accepted
+  rejected
 }
