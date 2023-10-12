@@ -11,3 +11,16 @@ export const addRatingToDB = async (
   });
   return result;
 };
+
+export const getAllReviewsFromDBService = async () => {
+  const result = await prisma.reviewAndRating.findMany({
+    include: {
+      service: {
+        include: {
+          category: true,
+        },
+      },
+    },
+  });
+  return result;
+};

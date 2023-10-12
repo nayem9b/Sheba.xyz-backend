@@ -5,8 +5,10 @@ import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
 import {
   addServiceToDB,
+  deleteServiceFromDB,
   getAllServiceFromDBService,
   getSingleServiceByCategoryIDFromDB,
+  updateServiceFromDB,
 } from "./services.service";
 
 export const postService = catchAsync(async (req: Request, res: Response) => {
@@ -42,6 +44,34 @@ export const getServiceByCategoryIdController = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "Single Service fetched successfully",
+      data: result,
+    });
+  }
+);
+
+export const updateServiceController = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const payload = req.body;
+    const result = await updateServiceFromDB(id, payload);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Service updated successfully",
+      data: result,
+    });
+  }
+);
+
+export const deleteServiceController = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const result = await deleteServiceFromDB(id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Service deleted successfully",
       data: result,
     });
   }

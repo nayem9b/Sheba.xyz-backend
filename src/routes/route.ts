@@ -3,6 +3,7 @@ import { userRoutes } from "../module/user/user.route";
 import { shebaServices } from "../module/services/services.route";
 import { categoryRoutes } from "../module/category/category.route";
 import { ratingRoutes } from "../module/rating/rating.route";
+import { bookingRoutes } from "../module/booking/booking.route";
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const moduleRoutes = [
   {
     path: "/",
     route: ratingRoutes,
+  },
+  {
+    path: "/",
+    route: bookingRoutes,
   },
 ];
 

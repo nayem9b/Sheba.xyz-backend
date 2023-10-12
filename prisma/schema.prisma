@@ -41,8 +41,20 @@ model Services {
   rating          String
   category        Category          @relation(fields: [categoryId], references: [id])
   ReviewAndRating ReviewAndRating[]
+  Booking         Booking[]
 
   @@map("services")
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  userId     String
+  status     Status   @default(pending)
+  service    Services @relation(fields: [servicesId], references: [id])
+  servicesId String
+  createdAt  DateTime @default(now())
+
+  @@map("booking")
 }
 
 model ReviewAndRating {
@@ -59,4 +71,9 @@ enum Role {
   superadmin
   admin
   customer
+}
+
+enum Status {
+  pending
+  delivered
 }
