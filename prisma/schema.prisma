@@ -39,6 +39,7 @@ model Services {
   image           String
   categoryId      String
   rating          String
+  location        Location          @default(Dhaka)
   category        Category          @relation(fields: [categoryId], references: [id])
   ReviewAndRating ReviewAndRating[]
   Booking         Booking[]
@@ -78,6 +79,14 @@ model ReviewAndRating {
   @@map("reviews")
 }
 
+model Feedback {
+  id       String @id @default(uuid())
+  email    String
+  feedback String
+
+  @@map("feedback")
+}
+
 enum Role {
   superadmin
   admin
@@ -90,4 +99,16 @@ enum Status {
   canceled
   accepted
   rejected
+}
+
+enum Location {
+  Dhaka
+  Rangpur
+  Rajshahi
+  Khulna
+  Barishal
+  Chittagong
+  Chattagram
+  Sylhet
+  Mymensingh
 }
