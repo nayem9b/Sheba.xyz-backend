@@ -9,3 +9,15 @@ export const addBookingToDB = async (data: Booking): Promise<Booking> => {
   });
   return result;
 };
+
+export const getBookingByUseridFromDB = async (id: string) => {
+  const result = await prisma.booking.findMany({
+    where: {
+      userId: id,
+    },
+    include: {
+      service: true,
+    },
+  });
+  return result;
+};
