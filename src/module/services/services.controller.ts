@@ -10,6 +10,9 @@ import {
   getSingleServiceByCategoryIDFromDB,
   updateServiceFromDB,
 } from "./services.service";
+import pick from "../../shared/pick";
+import { servicesFilterableFields } from "./services.constant";
+import { paginationFields } from "../../constants/pagination";
 
 export const postService = catchAsync(async (req: Request, res: Response) => {
   // const decodedToken = (token: string) => {
@@ -27,11 +30,14 @@ export const postService = catchAsync(async (req: Request, res: Response) => {
 
 export const getAllServiceController = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await getAllServiceFromDBService();
+    const filters = pick(req.query, servicesFilterableFields);
+    const options = pick(req.query, paginationFields);
+    const result = await getAllServiceFromDBService(filters, options);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: "Services fetched successfully",
+      meta: result.meta,
       data: result,
     });
   }
