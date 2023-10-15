@@ -118,6 +118,14 @@ export const getSingleServiceByCategoryIDFromDB = async (id: string) => {
   });
   return result;
 };
+export const getSingleServiceFromDB = async (id: string) => {
+  const result = await prisma.services.findUnique({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
 
 export const updateServiceFromDB = async (
   id: string,

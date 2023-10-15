@@ -48,3 +48,13 @@ export const getAllUsersFromDB = async () => {
   const result = await prisma.user.findMany({});
   return result;
 };
+
+export const getSingleUserFromDB = async (userId: string) => {
+  const result = await prisma.user.findFirst({
+    where: {
+      userId: userId,
+    },
+  });
+
+  return result;
+};

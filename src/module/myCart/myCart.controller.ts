@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
-import {addCartToDB, getMyCartByUseridFromDB} from './myCart.service';
+import {
+  addCartToDB,
+  getMyCartByUseridFromDB,
+  // clerkTesting,
+} from "./myCart.service";
 import { getBookingByUseridFromDB } from "../booking/booking.service";
 
 export const addTOCartController = catchAsync(
@@ -29,3 +33,5 @@ export const getMyCartByUserIdController = catchAsync(
     });
   }
 );
+
+0;

@@ -1,5 +1,7 @@
 import { MyCart } from "@prisma/client";
 import prisma from "../../shared/prisma";
+import clerk from "@clerk/clerk-sdk-node";
+import "dotenv/config";
 
 export const addCartToDB = async (data: MyCart): Promise<MyCart> => {
   const result = prisma.myCart.create({
@@ -19,3 +21,20 @@ export const getMyCartByUseridFromDB = async (id: string) => {
   });
   return result;
 };
+
+// export const clerkTesting = async () => {
+//   const userList = await clerk?.users.getUserList();
+//   console.log(userList);
+// };
+
+// async function getUsersList(): Promise<Clerk.User[]> {
+//   const clerk = new Clerk({
+//     secretKey: process.env.CLERK_SECRET_KEY,
+//   });
+
+//   const userList = await clerk.users.getUserList();
+
+//   return userList;
+// }
+
+// const userList = clerk.users.getUserList({});

@@ -9,6 +9,7 @@ import {
   getAllServiceFromDBService,
   getSingleServiceByCategoryIDFromDB,
   updateServiceFromDB,
+  getSingleServiceFromDB,
 } from "./services.service";
 import pick from "../../shared/pick";
 import { servicesFilterableFields } from "./services.constant";
@@ -46,6 +47,18 @@ export const getServiceByCategoryIdController = catchAsync(
   async (req: Request, res: Response) => {
     const categoryId = req.params.categoryId;
     const result = await getSingleServiceByCategoryIDFromDB(categoryId);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Single Service fetched successfully",
+      data: result,
+    });
+  }
+);
+export const getSingleServiceController = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await getSingleServiceFromDB(id);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
