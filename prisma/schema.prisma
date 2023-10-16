@@ -59,7 +59,7 @@ model Booking {
   name       String
   zip        String
   street     String
-  age        String
+  contactNo  Int
   time       String
   date       String
   createdAt  DateTime @default(now())
