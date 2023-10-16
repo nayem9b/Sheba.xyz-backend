@@ -123,6 +123,9 @@ export const getSingleServiceFromDB = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      category: true,
+    },
   });
   return result;
 };

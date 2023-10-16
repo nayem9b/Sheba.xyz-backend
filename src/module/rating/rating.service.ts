@@ -24,3 +24,18 @@ export const getAllReviewsFromDBService = async () => {
   });
   return result;
 };
+export const getSpecificServiceReviewFromDB = async (id: string) => {
+  const result = await prisma.reviewAndRating.findMany({
+    where: {
+      servicesId: id,
+    },
+    include: {
+      service: {
+        include: {
+          category: true,
+        },
+      },
+    },
+  });
+  return result;
+};

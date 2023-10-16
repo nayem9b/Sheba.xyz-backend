@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 import {
   addCartToDB,
   getMyCartByUseridFromDB,
-  // clerkTesting,
+  deleteCartFromDB,
 } from "./myCart.service";
 import { getBookingByUseridFromDB } from "../booking/booking.service";
 
@@ -33,5 +33,15 @@ export const getMyCartByUserIdController = catchAsync(
     });
   }
 );
-
-0;
+export const deleteMyCartController = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await deleteCartFromDB(id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "User Cart Deleted successfully",
+      data: result,
+    });
+  }
+);

@@ -21,8 +21,29 @@ export const getBookingByUseridFromDB = async (id: string) => {
   });
   return result;
 };
+
+export const getBookingByidFromDB = async (id: string) => {
+  const result = await prisma.booking.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      service: true,
+    },
+  });
+  return result;
+};
+
 export const getAllBookingsFromDB = async () => {
-  const result = await prisma.booking.findMany({});
+  const result = await prisma.booking.findMany({
+    include: {
+      service: {
+        include: {
+          category: true,
+        },
+      },
+    },
+  });
   return result;
 };
 

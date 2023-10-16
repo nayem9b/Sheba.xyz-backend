@@ -9,6 +9,7 @@ import {
   deleteBookingFromDB,
   getAllBookingsFromDB,
   updateBookingFromDB,
+  getBookingByidFromDB,
 } from "./booking.service";
 import {
   getSingleServiceByCategoryIDFromDB,
@@ -31,6 +32,19 @@ export const getBookingByUserIdController = catchAsync(
   async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const result = await getBookingByUseridFromDB(userId);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "User booked Services fetched successfully",
+      data: result,
+    });
+  }
+);
+
+export const getSingleBookingController = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await getBookingByidFromDB(id);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,

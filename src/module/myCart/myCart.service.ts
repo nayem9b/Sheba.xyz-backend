@@ -22,6 +22,14 @@ export const getMyCartByUseridFromDB = async (id: string) => {
   return result;
 };
 
+export const deleteCartFromDB = async (id: string) => {
+  const result = await prisma.myCart.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
 // export const clerkTesting = async () => {
 //   const userList = await clerk?.users.getUserList();
 //   console.log(userList);

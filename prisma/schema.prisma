@@ -55,7 +55,15 @@ model Booking {
   status     Status   @default(pending)
   service    Services @relation(fields: [servicesId], references: [id])
   servicesId String
+  email      String
+  name       String
+  zip        String
+  street     String
+  age        String
+  time       String
+  date       String
   createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("booking")
 }
@@ -76,6 +84,9 @@ model ReviewAndRating {
   rating     Int      @default(5)
   service    Services @relation(fields: [servicesId], references: [id])
   servicesId String
+  userImage  String
+  userId     String
+  createdAt  DateTime @default(now())
 
   @@map("reviews")
 }

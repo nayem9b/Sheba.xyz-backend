@@ -6,7 +6,11 @@ import {
   addServiceToDB,
   getAllServiceFromDBService,
 } from "../services/services.service";
-import {addRatingToDB, getAllReviewsFromDBService} from './rating.service';
+import {
+  addRatingToDB,
+  getAllReviewsFromDBService,
+  getSpecificServiceReviewFromDB,
+} from "./rating.service";
 export const postRating = catchAsync(async (req: Request, res: Response) => {
   const result = await addRatingToDB(req.body);
   sendResponse(res, {
@@ -24,6 +28,18 @@ export const getAllReviewController = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "Reviews fetched successfully",
+      data: result,
+    });
+  }
+);
+export const getReviewByServiceIdController = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await getSpecificServiceReviewFromDB(id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Specific Service Review fetched successfully",
       data: result,
     });
   }
