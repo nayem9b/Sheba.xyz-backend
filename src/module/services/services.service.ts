@@ -21,15 +21,15 @@ export const getAllServiceFromDBService = async (
 ): Promise<IGenericResponse<Services[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
 
-  const { search, ...filtersData } = filters;
+  const { searchTerm, ...filtersData } = filters;
   console.log(filtersData);
   const andConditions = [];
 
-  if (search) {
+  if (searchTerm) {
     andConditions.push({
       OR: servicesSearchableFields.map((field: any) => ({
         [field]: {
-          contains: search,
+          contains: searchTerm,
           mode: "insensitive",
         },
       })),

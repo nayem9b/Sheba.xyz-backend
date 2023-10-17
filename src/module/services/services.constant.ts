@@ -11,6 +11,7 @@ export type IservicesFilterableFieldsProps = {
   title?: string;
   location?: string;
   category?: string;
+  searchTerm?: string;
 };
 
 export const servicesSearchableFields = [
