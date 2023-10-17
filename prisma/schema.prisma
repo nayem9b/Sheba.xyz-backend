@@ -92,6 +92,15 @@ model ReviewAndRating {
   @@map("reviews")
 }
 
+model Content {
+  id      String @id @default(uuid())
+  heading String
+  image   String
+  content String
+
+  @@map("content")
+}
+
 model Feedback {
   id       String @id @default(uuid())
   email    String

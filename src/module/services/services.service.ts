@@ -115,6 +115,9 @@ export const getSingleServiceByCategoryIDFromDB = async (id: string) => {
     where: {
       categoryId: id,
     },
+    include: {
+      category: true,
+    },
   });
   return result;
 };
