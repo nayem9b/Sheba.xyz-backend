@@ -7,6 +7,7 @@ import {
   loginUserToDB,
   signUpUserTODB,
   getSingleUserFromDB,
+  deleteUserFromDB,
 } from "./user.service";
 
 export const signUpUserController: RequestHandler = catchAsync(
@@ -60,6 +61,20 @@ export const getSingleUserController: RequestHandler = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "User fetched successfully !",
+      data: result,
+    });
+  }
+);
+
+export const deleteUserController = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const result = await deleteUserFromDB(id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "User deleted successfully",
       data: result,
     });
   }
