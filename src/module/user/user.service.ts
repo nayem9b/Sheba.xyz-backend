@@ -80,9 +80,9 @@ export const deleteUserFromDB = async (id: string) => {
 };
 
 export const updateUserFromDB = async (id: string, payload: Partial<User>) => {
-  const result = await prisma.user.update({
+  const result = await prisma.user.updateMany({
     where: {
-      id,
+      userId: id,
     },
     data: payload,
   });

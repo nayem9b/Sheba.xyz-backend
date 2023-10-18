@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 router.post("/create-service", postService);
 router.get("/services", getAllServiceController);
-router.patch("/services", updateServiceController);
+router.patch("/services/:id", updateServiceController);
 router.delete("/services/:id", deleteServiceController);
 router.get("/services/category/:categoryId", getServiceByCategoryIdController);
 router.get("/services/:id", getSingleServiceController);
