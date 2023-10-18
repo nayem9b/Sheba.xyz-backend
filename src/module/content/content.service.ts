@@ -11,3 +11,12 @@ export const getAllContentFromDB = async () => {
   const result = prisma.content.findMany({});
   return result;
 };
+
+export const deleteContentFromDB = async (id: string) => {
+  const result = await prisma.content.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
