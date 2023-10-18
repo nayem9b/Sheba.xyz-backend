@@ -59,12 +59,32 @@ export const getSingleUserFromDB = async (userId: string) => {
   return result;
 };
 
+export const getSingleDBUserFromDB = async (id: string) => {
+  const result = await prisma.user.findFirst({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
 export const deleteUserFromDB = async (id: string) => {
   console.log(id);
   const result = await prisma.user.deleteMany({
     where: {
       userId: id,
     },
+  });
+  return result;
+};
+
+export const updateUserFromDB = async (id: string, payload: Partial<User>) => {
+  const result = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: payload,
   });
   return result;
 };

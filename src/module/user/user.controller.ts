@@ -8,6 +8,8 @@ import {
   signUpUserTODB,
   getSingleUserFromDB,
   deleteUserFromDB,
+  getSingleDBUserFromDB,
+  updateUserFromDB,
 } from "./user.service";
 
 export const signUpUserController: RequestHandler = catchAsync(
@@ -66,6 +68,20 @@ export const getSingleUserController: RequestHandler = catchAsync(
   }
 );
 
+export const getDBUserController: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.userId;
+    const result = await getSingleDBUserFromDB(id);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "DB User fetched successfully !",
+      data: result,
+    });
+  }
+);
+
 export const deleteUserController = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
@@ -75,6 +91,20 @@ export const deleteUserController = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "User deleted successfully",
+      data: result,
+    });
+  }
+);
+
+export const updateUserController = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const payload = req.body;
+    const result = await updateUserFromDB(id, payload);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Service updated successfully",
       data: result,
     });
   }
