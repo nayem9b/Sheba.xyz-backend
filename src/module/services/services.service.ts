@@ -4,10 +4,7 @@ import prisma from "../../shared/prisma";
 import { IPaginationOptions } from "../../constants/pagination";
 import { IGenericResponse } from "../../interface/common";
 import { paginationHelpers } from "../../helpers/paginationHelper";
-import {
-  IservicesFilterRequest,
-  serviceSearchableFields,
-} from "./services.constant";
+import { IServicesFilter, serviceSearchableFields } from "./services.constant";
 
 export const addServiceToDB = async (data: Services): Promise<Services> => {
   const result = prisma.services.create({
@@ -17,20 +14,19 @@ export const addServiceToDB = async (data: Services): Promise<Services> => {
 };
 
 export const getAllServiceFromDBService = async (
-  filters: IservicesFilterRequest,
-  options: IPaginationOptions
-): Promise<IGenericResponse<Services[]>> => {
-  const { page, limit, skip } = paginationHelpers.calculatePagination(options);
+  filters: IServicesFilter
+): Promise<Services[]> => {
+  // const { page, limit, skip } = paginationHelpers.calculatePagination(options);
 
-  const { search, ...filtersData } = filters;
-  console.log(search, filtersData);
+  const { searchTerm, ...filtersData } = filters;
+  console.log(searchTerm, filtersData);
   const andConditions = [];
 
-  if (search) {
+  if (searchTerm) {
     andConditions.push({
       OR: serviceSearchableFields.map((field) => ({
         [field]: {
-          contains: search,
+          contains: searchTerm,
           mode: "insensitive",
         },
       })),
@@ -57,24 +53,11 @@ export const getAllServiceFromDBService = async (
     include: {
       category: true,
     },
-    take: limit,
-    skip,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? { [options.sortBy]: options.sortOrder }
-        : {},
   });
   const total: number = await prisma.services.count({
     where: whereConditions,
   });
-  return {
-    meta: {
-      total,
-      page,
-      limit,
-    },
-    data: result,
-  };
+  return result;
 };
 
 export const getSingleServiceByCategoryIDFromDB = async (id: string) => {

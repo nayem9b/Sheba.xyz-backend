@@ -23,9 +23,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteServiceFromDB = exports.updateServiceFromDB = exports.getSingleServiceFromDB = exports.getSingleServiceByCategoryIDFromDB = exports.getAllServiceFromDBService = exports.addServiceToDB = void 0;
+exports.deleteServiceFromDB = exports.updateServiceFromDB = exports.getAvailableServicesFromDB = exports.getUpcomingServicesFromDB = exports.getSingleServiceFromDB = exports.getSingleServiceByCategoryIDFromDB = exports.getAllServiceFromDBService = exports.addServiceToDB = void 0;
 const prisma_1 = __importDefault(require("../../shared/prisma"));
-const paginationHelper_1 = require("../../helpers/paginationHelper");
 const services_constant_1 = require("./services.constant");
 const addServiceToDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const result = prisma_1.default.services.create({
@@ -34,16 +33,16 @@ const addServiceToDB = (data) => __awaiter(void 0, void 0, void 0, function* () 
     return result;
 });
 exports.addServiceToDB = addServiceToDB;
-const getAllServiceFromDBService = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
-    const { page, limit, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
-    const { search } = filters, filtersData = __rest(filters, ["search"]);
-    console.log(search, filtersData);
+const getAllServiceFromDBService = (filters) => __awaiter(void 0, void 0, void 0, function* () {
+    // const { page, limit, skip } = paginationHelpers.calculatePagination(options);
+    const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
+    console.log(searchTerm, filtersData);
     const andConditions = [];
-    if (search) {
+    if (searchTerm) {
         andConditions.push({
             OR: services_constant_1.serviceSearchableFields.map((field) => ({
                 [field]: {
-                    contains: search,
+                    contains: searchTerm,
                     mode: "insensitive",
                 },
             })),
@@ -66,23 +65,11 @@ const getAllServiceFromDBService = (filters, options) => __awaiter(void 0, void 
         include: {
             category: true,
         },
-        take: limit,
-        skip,
-        orderBy: options.sortBy && options.sortOrder
-            ? { [options.sortBy]: options.sortOrder }
-            : {},
     });
     const total = yield prisma_1.default.services.count({
         where: whereConditions,
     });
-    return {
-        meta: {
-            total,
-            page,
-            limit,
-        },
-        data: result,
-    };
+    return result;
 });
 exports.getAllServiceFromDBService = getAllServiceFromDBService;
 const getSingleServiceByCategoryIDFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -109,6 +96,30 @@ const getSingleServiceFromDB = (id) => __awaiter(void 0, void 0, void 0, functio
     return result;
 });
 exports.getSingleServiceFromDB = getSingleServiceFromDB;
+const getUpcomingServicesFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.services.findMany({
+        where: {
+            status: "upcoming",
+        },
+        include: {
+            category: true,
+        },
+    });
+    return result;
+});
+exports.getUpcomingServicesFromDB = getUpcomingServicesFromDB;
+const getAvailableServicesFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.services.findMany({
+        where: {
+            status: "available",
+        },
+        include: {
+            category: true,
+        },
+    });
+    return result;
+});
+exports.getAvailableServicesFromDB = getAvailableServicesFromDB;
 const updateServiceFromDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.default.services.update({
         where: {

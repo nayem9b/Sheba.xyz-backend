@@ -8,11 +8,6 @@ export const serviceSearchableFields = [
 
 export const servicesFilterableFields = ["name", "search", "location"];
 
-export type IservicesFilterRequest = {
-  search?: string;
+export type IServicesFilter = {
   searchTerm?: string;
-  name?: string;
-  location?: string;
-  // category?: string;
-  // title?: string;
 };

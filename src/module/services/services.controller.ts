@@ -35,12 +35,12 @@ export const getAllServiceController = catchAsync(
   async (req: Request, res: Response) => {
     const filters = pick(req.query, servicesFilterableFields);
     const options = pick(req.query, paginationFields);
-    const result = await getAllServiceFromDBService(filters, options);
+    const result = await getAllServiceFromDBService(filters);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: "Services fetched successfully",
-      meta: result.meta,
+
       data: result,
     });
   }
