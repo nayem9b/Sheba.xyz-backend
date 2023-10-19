@@ -10,6 +10,8 @@ import {
   getSingleServiceByCategoryIDFromDB,
   updateServiceFromDB,
   getSingleServiceFromDB,
+  getUpcomingServicesFromDB,
+  getAvailableServicesFromDB,
 } from "./services.service";
 import pick from "../../shared/pick";
 import { servicesFilterableFields } from "./services.constant";
@@ -43,6 +45,7 @@ export const getAllServiceController = catchAsync(
     });
   }
 );
+
 export const getServiceByCategoryIdController = catchAsync(
   async (req: Request, res: Response) => {
     const categoryId = req.params.categoryId;
@@ -55,6 +58,29 @@ export const getServiceByCategoryIdController = catchAsync(
     });
   }
 );
+export const getUpcomingServiceController = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getUpcomingServicesFromDB();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Upcoming Service fetched successfully",
+      data: result,
+    });
+  }
+);
+export const getAvailableServiceController = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAvailableServicesFromDB();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Available Service fetched successfully",
+      data: result,
+    });
+  }
+);
+
 export const getSingleServiceController = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;

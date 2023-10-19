@@ -1,12 +1,13 @@
 import { Prisma, Services } from "@prisma/client";
 import prisma from "../../shared/prisma";
-import {
-  IservicesFilterableFieldsProps,
-  servicesSearchableFields,
-} from "./services.constant";
+
 import { IPaginationOptions } from "../../constants/pagination";
 import { IGenericResponse } from "../../interface/common";
 import { paginationHelpers } from "../../helpers/paginationHelper";
+import {
+  IservicesFilterRequest,
+  serviceSearchableFields,
+} from "./services.constant";
 
 export const addServiceToDB = async (data: Services): Promise<Services> => {
   const result = prisma.services.create({
@@ -16,20 +17,20 @@ export const addServiceToDB = async (data: Services): Promise<Services> => {
 };
 
 export const getAllServiceFromDBService = async (
-  filters: IservicesFilterableFieldsProps,
+  filters: IservicesFilterRequest,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Services[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
 
-  const { searchTerm, ...filtersData } = filters;
-  console.log(filtersData);
+  const { search, ...filtersData } = filters;
+  console.log(search, filtersData);
   const andConditions = [];
 
-  if (searchTerm) {
+  if (search) {
     andConditions.push({
-      OR: servicesSearchableFields.map((field: any) => ({
+      OR: serviceSearchableFields.map((field) => ({
         [field]: {
-          contains: searchTerm,
+          contains: search,
           mode: "insensitive",
         },
       })),
@@ -51,63 +52,29 @@ export const getAllServiceFromDBService = async (
   console.log(JSON.stringify(andConditions));
   console.log(JSON.stringify(whereConditions));
 
-  if (filtersData?.title) {
-    const result = await prisma.services.findMany({
-      where: {
-        category: {
-          title: filtersData.title,
-        },
-      },
-      include: {
-        category: true,
-      },
-      take: limit,
-      skip,
-      orderBy:
-        options.sortBy && options.sortOrder
-          ? { [options.sortBy]: options.sortOrder }
-          : {},
-    });
-    const total: number = await prisma.services.count({
-      where: {
-        category: {
-          title: filtersData.title,
-        },
-      },
-    });
-    return {
-      meta: {
-        total,
-        page,
-        limit,
-      },
-      data: result,
-    };
-  } else {
-    const result = await prisma.services.findMany({
-      where: whereConditions,
-      include: {
-        category: true,
-      },
-      take: limit,
-      skip,
-      orderBy:
-        options.sortBy && options.sortOrder
-          ? { [options.sortBy]: options.sortOrder }
-          : {},
-    });
-    const total: number = await prisma.services.count({
-      where: whereConditions,
-    });
-    return {
-      meta: {
-        total,
-        page,
-        limit,
-      },
-      data: result,
-    };
-  }
+  const result = await prisma.services.findMany({
+    where: whereConditions,
+    include: {
+      category: true,
+    },
+    take: limit,
+    skip,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {},
+  });
+  const total: number = await prisma.services.count({
+    where: whereConditions,
+  });
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  };
 };
 
 export const getSingleServiceByCategoryIDFromDB = async (id: string) => {
@@ -125,6 +92,30 @@ export const getSingleServiceFromDB = async (id: string) => {
   const result = await prisma.services.findUnique({
     where: {
       id,
+    },
+    include: {
+      category: true,
+    },
+  });
+  return result;
+};
+
+export const getUpcomingServicesFromDB = async () => {
+  const result = await prisma.services.findMany({
+    where: {
+      status: "upcoming",
+    },
+    include: {
+      category: true,
+    },
+  });
+  return result;
+};
+
+export const getAvailableServicesFromDB = async () => {
+  const result = await prisma.services.findMany({
+    where: {
+      status: "available",
     },
     include: {
       category: true,

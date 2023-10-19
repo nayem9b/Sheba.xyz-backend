@@ -1,16 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.servicesSearchableFields = exports.servicesFilterableFields = void 0;
-exports.servicesFilterableFields = [
-    "search",
+exports.servicesFilterableFields = exports.serviceSearchableFields = void 0;
+exports.serviceSearchableFields = [
     "name",
     "location",
-    "category",
-    "title",
+    // "searchTerm",
+    // "category",
+    // "title",
 ];
-exports.servicesSearchableFields = [
-    "name",
-    "location",
-    "category",
-    "title",
-];
+exports.servicesFilterableFields = ["name", "search", "location"];

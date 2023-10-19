@@ -1,22 +1,18 @@
-export const servicesFilterableFields = [
-  "search",
+export const serviceSearchableFields = [
   "name",
   "location",
-  "category",
-  "title",
+  // "searchTerm",
+  // "category",
+  // "title",
 ];
-export type IservicesFilterableFieldsProps = {
-  search?: string;
-  name?: string;
-  title?: string;
-  location?: string;
-  category?: string;
-  searchTerm?: string;
-};
 
-export const servicesSearchableFields = [
-  "name",
-  "location",
-  "category",
-  "title",
-];
+export const servicesFilterableFields = ["name", "search", "location"];
+
+export type IservicesFilterRequest = {
+  search?: string;
+  searchTerm?: string;
+  name?: string;
+  location?: string;
+  // category?: string;
+  // title?: string;
+};

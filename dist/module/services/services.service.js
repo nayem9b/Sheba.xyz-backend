@@ -25,8 +25,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteServiceFromDB = exports.updateServiceFromDB = exports.getSingleServiceFromDB = exports.getSingleServiceByCategoryIDFromDB = exports.getAllServiceFromDBService = exports.addServiceToDB = void 0;
 const prisma_1 = __importDefault(require("../../shared/prisma"));
-const services_constant_1 = require("./services.constant");
 const paginationHelper_1 = require("../../helpers/paginationHelper");
+const services_constant_1 = require("./services.constant");
 const addServiceToDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const result = prisma_1.default.services.create({
         data,
@@ -36,14 +36,14 @@ const addServiceToDB = (data) => __awaiter(void 0, void 0, void 0, function* () 
 exports.addServiceToDB = addServiceToDB;
 const getAllServiceFromDBService = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { page, limit, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
-    const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
-    console.log(filtersData);
+    const { search } = filters, filtersData = __rest(filters, ["search"]);
+    console.log(search, filtersData);
     const andConditions = [];
-    if (searchTerm) {
+    if (search) {
         andConditions.push({
-            OR: services_constant_1.servicesSearchableFields.map((field) => ({
+            OR: services_constant_1.serviceSearchableFields.map((field) => ({
                 [field]: {
-                    contains: searchTerm,
+                    contains: search,
                     mode: "insensitive",
                 },
             })),
@@ -61,62 +61,28 @@ const getAllServiceFromDBService = (filters, options) => __awaiter(void 0, void 
     const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {};
     console.log(JSON.stringify(andConditions));
     console.log(JSON.stringify(whereConditions));
-    if (filtersData === null || filtersData === void 0 ? void 0 : filtersData.title) {
-        const result = yield prisma_1.default.services.findMany({
-            where: {
-                category: {
-                    title: filtersData.title,
-                },
-            },
-            include: {
-                category: true,
-            },
-            take: limit,
-            skip,
-            orderBy: options.sortBy && options.sortOrder
-                ? { [options.sortBy]: options.sortOrder }
-                : {},
-        });
-        const total = yield prisma_1.default.services.count({
-            where: {
-                category: {
-                    title: filtersData.title,
-                },
-            },
-        });
-        return {
-            meta: {
-                total,
-                page,
-                limit,
-            },
-            data: result,
-        };
-    }
-    else {
-        const result = yield prisma_1.default.services.findMany({
-            where: whereConditions,
-            include: {
-                category: true,
-            },
-            take: limit,
-            skip,
-            orderBy: options.sortBy && options.sortOrder
-                ? { [options.sortBy]: options.sortOrder }
-                : {},
-        });
-        const total = yield prisma_1.default.services.count({
-            where: whereConditions,
-        });
-        return {
-            meta: {
-                total,
-                page,
-                limit,
-            },
-            data: result,
-        };
-    }
+    const result = yield prisma_1.default.services.findMany({
+        where: whereConditions,
+        include: {
+            category: true,
+        },
+        take: limit,
+        skip,
+        orderBy: options.sortBy && options.sortOrder
+            ? { [options.sortBy]: options.sortOrder }
+            : {},
+    });
+    const total = yield prisma_1.default.services.count({
+        where: whereConditions,
+    });
+    return {
+        meta: {
+            total,
+            page,
+            limit,
+        },
+        data: result,
+    };
 });
 exports.getAllServiceFromDBService = getAllServiceFromDBService;
 const getSingleServiceByCategoryIDFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {

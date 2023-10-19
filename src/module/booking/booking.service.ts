@@ -49,7 +49,7 @@ export const getAllBookingsFromDB = async () => {
 
 export const updateBookingFromDB = async (
   id: string,
-  payload: Partial<Services>
+  payload: Partial<Booking>
 ) => {
   const result = await prisma.booking.update({
     where: {
