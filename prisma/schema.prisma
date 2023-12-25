@@ -37,7 +37,7 @@ model Category {
 model Services {
   id              String            @id @default(uuid())
   name            String
-  price           String
+  price           Int
   details         String
   image           String
   categoryId      String
