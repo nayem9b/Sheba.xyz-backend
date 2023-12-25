@@ -78,6 +78,7 @@ export const getSingleServiceFromDB = async (id: string) => {
     },
     include: {
       category: true,
+      ReviewAndRating: true,
     },
   });
   return result;

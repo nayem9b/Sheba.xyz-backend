@@ -31,3 +31,15 @@ export const getAllCategoryController = catchAsync(
     });
   }
 );
+
+export const getCategoryByIdController = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllCategoryFromDBService();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "category fetched successfully",
+      data: result,
+    });
+  }
+);
