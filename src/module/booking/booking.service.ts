@@ -47,6 +47,41 @@ export const getAllBookingsFromDB = async () => {
   return result;
 };
 
+export const getAllPendingBookingsFromDB = async () => {
+  const result = await prisma.booking.findMany({
+    where: {
+      status: "pending",
+    },
+  });
+  return result;
+};
+
+export const getAllDeliveredBookingsFromDB = async () => {
+  const result = await prisma.booking.findMany({
+    where: {
+      status: "delivered",
+    },
+  });
+  return result;
+};
+
+export const getAllCanceledBookingsFromDB = async () => {
+  const result = await prisma.booking.findMany({
+    where: {
+      status: "canceled",
+    },
+  });
+  return result;
+};
+export const getAllRejectedBookingsFromDB = async () => {
+  const result = await prisma.booking.findMany({
+    where: {
+      status: "rejected",
+    },
+  });
+  return result;
+};
+
 export const updateBookingFromDB = async (
   id: string,
   payload: Partial<Booking>

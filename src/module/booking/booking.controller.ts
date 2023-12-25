@@ -10,6 +10,10 @@ import {
   getAllBookingsFromDB,
   updateBookingFromDB,
   getBookingByidFromDB,
+  getAllPendingBookingsFromDB,
+  getAllDeliveredBookingsFromDB,
+  getAllCanceledBookingsFromDB,
+  getAllRejectedBookingsFromDB,
 } from "./booking.service";
 import {
   getSingleServiceByCategoryIDFromDB,
@@ -60,6 +64,51 @@ export const getAllBookingController = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "All Bookings fetched successfully",
+      data: result,
+    });
+  }
+);
+
+export const getAllPendingBookingController = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllPendingBookingsFromDB();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "All Pending Bookings fetched successfully",
+      data: result,
+    });
+  }
+);
+export const getAllDeliveredBookingController = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllDeliveredBookingsFromDB();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "All Delivered Bookings fetched successfully",
+      data: result,
+    });
+  }
+);
+export const getAllCanceledController = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllCanceledBookingsFromDB();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "All Canceled Bookings fetched successfully",
+      data: result,
+    });
+  }
+);
+export const getAllRejectedController = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllRejectedBookingsFromDB();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "All Rejected Bookings fetched successfully",
       data: result,
     });
   }
