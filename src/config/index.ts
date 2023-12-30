@@ -15,4 +15,6 @@ export default {
     access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
     refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
   },
+  AWS_ACCESS_ID: process.env.AWS_ACCESS_ID,
+  AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
 };
