@@ -94,6 +94,19 @@ model ReviewAndRating {
   @@map("reviews")
 }
 
+model Payment {
+  id                 String        @id @default(uuid())
+  amount             Int
+  customerId         String
+  status             PaymentStatus @default(PANDING)
+  transactionId      String
+  paymentGatewayData Json?
+  createdAt          DateTime?     @default(now())
+  updatedAt          DateTime?     @updatedAt
+
+  @@map("payments")
+}
+
 model Content {
   id      String @id @default(uuid())
   heading String
@@ -140,4 +153,9 @@ enum Location {
 enum ServiceStatus {
   available
   upcoming
+}
+
+enum PaymentStatus {
+  PANDING
+  PAID
 }
