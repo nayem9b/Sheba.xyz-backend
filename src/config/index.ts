@@ -12,13 +12,11 @@ const envVarsZodSchema = z.object({
     .default("3000")
     .refine((val) => Number(val)),
   DATABASE_URL: z.string(),
-  REDIS_URL: z.string(),
   JWT_SECRET: z.string(),
   STORE_ID: z.string(),
   STORE_PASS: z.string(),
   SSL_BASE_PAYMENT_URL: z.string(),
   SSL_BASE_VALIDATION_URL: z.string(),
-  BCRYPT_SALT_ROUNDS: z.number(),
   ACCESS_SECRET: z.string(),
   REFRESH_SECRET: z.string(),
   JWT_ACCESS_EXPIRES_IN: z.string(),
@@ -33,7 +31,7 @@ export default {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   database_url: envVars.DATABASE_URL,
-  bycrypt_salt_rounds: envVars.BCRYPT_SALT_ROUNDS,
+
   jwt: {
     access_secret: envVars.ACCESS_SECRET,
     refresh_secret: envVars.REFRESH_SECRET,

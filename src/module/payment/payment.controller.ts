@@ -12,3 +12,7 @@ const initPayment = async (req: Request, res: Response, next: NextFunction) => {
     data: result,
   });
 };
+
+export const PaymentController = {
+  initPayment,
+};
