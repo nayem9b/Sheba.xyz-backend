@@ -1,6 +1,9 @@
+
 export const typeDefs = `#graphql
     type Query {
         me: User
+        category: Category
+        categoris: [Category]
         users: [User]
         posts: [Post]
         profile(userId: ID!): Profile
@@ -32,6 +35,12 @@ export const typeDefs = `#graphql
         author: User
         createdAt: String!
         published: Boolean!
+    }
+
+    type Category {
+    id: ID!
+    title: String!
+    image: String!
     }
 
     type User {

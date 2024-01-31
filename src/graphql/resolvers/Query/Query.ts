@@ -1,10 +1,8 @@
+import prisma from "../../../shared/prisma";
+
 export const Query = {
-  me: async (parent: any, agrs: any, { prisma, userInfo }: any) => {
-    return await prisma.user.findUnique({
-      where: {
-        id: userInfo.userId,
-      },
-    });
+  category: async () => {
+    return await prisma.category.findMany({})
   },
   profile: async (parent: any, args: any, { prisma, userInfo }: any) => {
     return await prisma.profile.findUnique({

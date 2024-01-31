@@ -26,18 +26,12 @@ const main = async () => {
       };
     },
   });
+
   app.listen(config.port, () => {
     console.log(`Server is running on port ${config.port} `);
   });
 
-  console.log(`🚀  Server ready at: ${url}`);
+  console.log(`🚀 Apollo GraphQL is ready at ${url}`);
 };
 
 main();
-// async function bootstrap() {
-// app.listen(config.port, () => {
-//   console.log(`Server is running on port ${config.port} `);
-// });
-// }
-
-// bootstrap();
