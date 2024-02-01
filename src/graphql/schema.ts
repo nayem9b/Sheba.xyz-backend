@@ -1,9 +1,7 @@
-
 export const typeDefs = `#graphql
     type Query {
         me: User
-        category: Category
-        categoris: [Category]
+        category: [Category]
         users: [User]
         posts: [Post]
         profile(userId: ID!): Profile
@@ -41,7 +39,98 @@ export const typeDefs = `#graphql
     id: ID!
     title: String!
     image: String!
+    Services: [Services!]!
     }
+
+    type Services{
+    id: ID!
+    name: String!
+    price: Int!
+    details: String!
+    image: String!
+    categoryId: String!
+    rating: String!
+    } 
+
+type Services {
+  id: ID!
+  name: String!
+  price: Int!
+  details: String!
+  image: String!
+  categoryId: String!
+  rating: String!
+  location: Location! 
+  status: ServiceStatus!
+  category: Category!
+  ReviewAndRating: [ReviewAndRating!]!
+  Booking: [Booking!]!
+  MyCart: [MyCart!]!
+}
+
+enum Location {
+  Dhaka
+  Rangpur
+  Rajshahi
+  Khulna
+  Barishal
+  Chittagong
+  Chattagram
+  Sylhet
+  Mymensingh
+}
+
+enum ServiceStatus {
+  available
+  upcoming
+}
+
+
+type Booking {
+  id: ID!
+  userId: String!
+  status: Status!
+  service: Services!
+  servicesId: String!
+  email: String!
+  name: String!
+  zip: String!
+  street: String!
+  contactNo: Int!
+  time: String!
+  date: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum Status {
+  pending
+  delivered
+  canceled
+  accepted
+  rejected
+}
+
+type MyCart {
+  id: ID!
+  userId: String!
+  servicesId: String!
+  createdAt: String!
+  service: Services!
+}
+
+type ReviewAndRating {
+  id: ID!
+  review: String!
+  rating: Int!
+  service: Services!
+  servicesId: String!
+  userImage: String!
+  userId: String!
+  createdAt: String!
+}
+
+
 
     type User {
         id: ID!
