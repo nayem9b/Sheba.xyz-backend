@@ -24,4 +24,4 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: nayem9b/sheba:latest
+        tags: nayem9b/sheba-backend-github-build:latest

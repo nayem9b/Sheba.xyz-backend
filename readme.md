@@ -1,74 +1,128 @@
 # Sheba.xyz
 
-## Live Website: https://shebaxyz-gt23ec1s0-nayem9b.vercel.app/
+A comprehensive service booking platform with user, admin, and super admin functionalities.
 
-## Super Admin Credentials
+##  Quick Links
 
-## email: admin@admin.com
+- **Live Website:** [Sheba.xyz](https://shebaxyz-gt23ec1s0-nayem9b.vercel.app/)
+- **Backend API:** [http://localhost:5000](http://localhost:5000)
+- **API Documentation:** [Postman Documentation](https://documenter.getpostman.com/view/24754089/2s9YRB1X3f)
+- **Demo Video:** [Watch Demo](https://cutt.ly/KwQ5FonA)
 
-## password: adminVitamin
+##  Repository Links
 
-## Video Link: https://cutt.ly/KwQ5FonA
+- **Frontend Repository:** [Sheba.xyz Frontend](https://github.com/nayem9b/Sheba.xyz-frontend)
+- **Backend Repository:** [Sheba.xyz Backend](https://github.com/nayem9b/Sheba.xyz-backend)
 
-## Backend Live-link: http://localhost:5000/
+##  Demo Credentials
 
-## Postman Documentor Link: https://documenter.getpostman.com/view/24754089/2s9YRB1X3f
+```
+Super Admin Access:
+Email: admin@admin.com
+Password: adminVitamin
+```
 
-### client-side-repo: https://github.com/nayem9b/Sheba.xyz-frontend
-
-### server-side-repo: https://github.com/nayem9b/Sheba.xyz-backend
-
-#### ER Diagram
+## 📊 Database Schema
 
 ![ER Diagram](https://i.ibb.co/bQbtt7d/ER-Diagram.png)
 
-### Homepage Contents
+##  Features
 
-- Navbar
-- Header
-- Available Service
-- Upcoming Services
-- Events by Category
-- Survey/Overview
-- Client Review
-- Latest News
+### Homepage Components
+- Navigation Bar
+- Hero Section
+- Available Services Grid
+- Upcoming Services Showcase
+- Category-based Event Display
+- Service Overview & Statistics
+- Customer Reviews & Testimonials
+- News & Updates Section
 - Footer
-- Two or more unique Sections
+- Additional Unique Sections
 
-### User Functional Requirements
+##  User Features
 
-- Users are able to register with a valid email address.
-- Implemented password validation and security measures.
-- Users log in to access their accounts.
-- Users can create and manage their profiles, including personal information and preferences.
-- Users are able to view and edit their profiles easily.
-- Users can browse available services.
-- search feature allowing users to search services by name, location, and category.
-- Users are able to filter services by price range and other relevant criteria.
-- Users can select services and choose available dates and times for booking(if applicable) .
-- smooth and user-friendly booking process with confirmation.
-- Users are able to track the status of their bookings.
-- Users can leave reviews and ratings for services they have booked.
-- Reviews and ratings are displayed on service listings.
-- user dashboard displaying booking history and statuses.
-- Users have the option to cancel bookings if necessary.
-- user-friendly feedback forms for users to submit comments and suggestions.
+### Authentication & Profile
+- Secure registration with email verification
+- Password validation and security measures
+- Profile management with personal information
+- Easy profile viewing and editing
 
-### Admin Functional Requirements
+### Service Interaction
+- Browse available services
+- Advanced search by name, location, and category
+- Filter services by price range and criteria
+- Book services with date and time selection
+- User-friendly booking process with confirmation
+- Track booking status
+- Cancel bookings when needed
 
-- Admins should have access to a centralized dashboard to monitor and manage website activities.
-- Admins can add, edit, and manage user accounts.
-- Admins are able to add, edit, and remove service listings.
-- options for pricing, descriptions, and availability management.
-- booking management system for administrators to view and manage booking requests.
-- Admins can accept, reject, or adjust schedules as needed.
-- content management system for administrators to control website content, including blog posts and FAQs.
-- Allowed administrators to manage their profiles.
+### Feedback & Reviews
+- Submit service reviews and ratings
+- View ratings on service listings
+- User-friendly feedback submission
+- Access booking history via dashboard
 
-### Super Admin Functional Requirements
+##  Admin Features
 
-- Super admins can add new admin users to the system.
-- managing admin roles.
-- profile management system for super admins to update their personal information.
+### Dashboard & Management
+- Centralized dashboard for monitoring activities
+- User account management
+- Service listing management (CRUD operations)
+- Pricing and availability configuration
+- Booking request management
+- Schedule adjustment capabilities
 
--AWS RDS test
+### Content Management
+- Blog post and FAQ management
+- Website content control
+- Admin profile management
+
+##  Super Admin Features
+
+### System Administration
+- Admin user management
+- Role management and assignment
+- Profile management system
+
+## 🛠️ Technical Stack
+
+- **Frontend:** Next.js, TypeScript, Redux
+- **Backend:** Node.js, Express, TypeScript
+- **Database:** PostgreSQL with Prisma ORM
+- **Cloud Services:** AWS RDS
+- **Authentication:** Clerk
+- **Testing:** Jest, Supertest
+
+##  Getting Started
+
+### Prerequisites
+- Node.js
+- PostgreSQL
+- npm/yarn
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/nayem9b/Sheba.xyz-backend.git
+
+# Install dependencies
+cd Sheba.xyz-backend
+npm install
+
+# Set up environment variables
+cp .env.example .env
+
+# Run migrations
+npx prisma migrate dev
+
+# Start development server
+npm run dev
+```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+Built with ❤️ by [Nayem](https://github.com/nayem9b)
