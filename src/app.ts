@@ -13,4 +13,8 @@ app.get("/", async (req: Request, res: Response, next: NextFunction) => {
   res.send("Welcome to Sheba.xyz");
 });
 
+app.get("/health", async (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).send("Server is healthy");
+});
+
 export default app;
