@@ -8,8 +8,25 @@ import { cartServices } from "../module/myCart/myCart.route";
 import { feedbackRoutes } from "../module/feedback/feedback.route";
 import { contentRoutes } from "../module/content/content.route";
 import { paymentRoutes } from "../module/payment/payment.routes";
+import { httpRequestCounter, requestDurationHistogram, requestDurationSummary } from "../metrics/metrics_utils";
 
+const promClient = require('prom-client');
 const router = express.Router();
+
+
+
+router.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = (Date.now() - start) / 1000;
+    const { method, originalUrl } = req;
+    const statusCode = res.statusCode;
+    httpRequestCounter.labels({ method, path: originalUrl, status_code: statusCode }).inc();
+    requestDurationHistogram.labels({ method, path: originalUrl, status_code: statusCode }).observe(duration);
+    requestDurationSummary.labels({ method, path: originalUrl, status_code: statusCode }).observe(duration);
+  });
+  next();
+});
 
 const moduleRoutes = [
   {
