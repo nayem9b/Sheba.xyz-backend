@@ -1,0 +1,6 @@
+replicaCount: 2
+
+image:
+  repository: nayem9b/sheba-backend-github-build
+  tag: latest
+  pullPolicy: IfNotPresent
