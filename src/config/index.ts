@@ -1,9 +1,6 @@
-/* eslint-disable no-undef */
-import dotenv from "dotenv";
-import path from "path";
 import { z } from "zod";
 
-dotenv.config({ path: path.join(process.cwd(), ".env") });
+// Using environment variables directly from the OS
 
 const envVarsZodSchema = z.object({
   NODE_ENV: z.string(),
@@ -25,6 +22,7 @@ const envVarsZodSchema = z.object({
   AWS_ACCESS_KEY: z.string(),
 });
 
+// Parse environment variables with zod
 const envVars = envVarsZodSchema.parse(process.env);
 
 export default {
