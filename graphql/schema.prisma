@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id         String  @id @default(uuid())
+  externalId String  @unique
+  userId     String
+  name       String
+  email      String
+  password   String?
+  role       Role    @default(customer)
+  contactNo  String?
+  address    String?
+  profileImg String
+
+  @@map("user")
+}
+
+model Category {
+  id       String     @id @default(uuid())
+  title    String
+  image    String
+  Services Services[]
+
+  @@map("category")
+}
+
+model Services {
+  id              String            @id @default(uuid())
+  name            String
+  price           Int
+  details         String
+  image           String
+  categoryId      String
+  rating          String
+  location        Location          @default(Dhaka)
+  status          ServiceStatus     @default(available)
+  category        Category          @relation(fields: [categoryId], references: [id])
+  ReviewAndRating ReviewAndRating[]
+  Booking         Booking[]
+  MyCart          MyCart[]
+
+  @@map("services")
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  userId     String
+  status     Status   @default(pending)
+  service    Services @relation(fields: [servicesId], references: [id])
+  servicesId String
+  email      String
+  name       String
+  zip        String
+  street     String
+  contactNo  Int
+  time       String
+  date       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("booking")
+}
+
+model MyCart {
+  id         String   @id @default(uuid())
+  userId     String
+  servicesId String
+  createdAt  DateTime @default(now())
+  service    Services @relation(fields: [servicesId], references: [id])
+
+  @@map("myCart")
+}
+
+model ReviewAndRating {
+  id         String   @id @default(uuid())
+  review     String
+  rating     Int      @default(5)
+  service    Services @relation(fields: [servicesId], references: [id])
+  servicesId String
+  userImage  String
+  userId     String
+  createdAt  DateTime @default(now())
+
+  @@map("reviews")
+}
+
+model Payment {
+  id                 String        @id @default(uuid())
+  amount             Int
+  customerId         String
+  status             PaymentStatus @default(PANDING)
+  transactionId      String
+  paymentGatewayData Json?
+  createdAt          DateTime?     @default(now())
+  updatedAt          DateTime?     @updatedAt
+
+  @@map("payments")
+}
+
+model Content {
+  id      String @id @default(uuid())
+  heading String
+  image   String
+  content String
+
+  @@map("content")
+}
+
+model Feedback {
+  id       String @id @default(uuid())
+  email    String
+  feedback String
+
+  @@map("feedback")
+}
+
+enum Role {
+  superadmin
+  admin
+  customer
+}
+
+enum Status {
+  pending
+  delivered
+  canceled
+  accepted
+  rejected
+}
+
+enum Location {
+  Dhaka
+  Rangpur
+  Rajshahi
+  Khulna
+  Barishal
+  Chittagong
+  Chattagram
+  Sylhet
+  Mymensingh
+}
+
+enum ServiceStatus {
+  available
+  upcoming
+}
+
+enum PaymentStatus {
+  PANDING
+  PAID
+}
