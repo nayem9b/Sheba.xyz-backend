@@ -1,3 +1,5 @@
+
+/* global describe, it, beforeEach, expect */
 import request from 'supertest';
 import { PrismaClient } from '@prisma/client';
 import app from '../../app';

@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
-import { typeDefs } from './schema';
+
 
 const prisma = new PrismaClient();
 
@@ -8,21 +8,21 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export const resolvers = {
   Query: {
-    me: async (_, __, context) => {
+  me: async () => {
       // Implement your authentication logic here
       return null;
     },
     users: async () => {
       return await prisma.user.findMany();
     },
-    user: async (_, { id }) => {
+  user: async (_parent, { id }) => {
       return await prisma.user.findUnique({
         where: { id },
       });
     },
   },
   Mutation: {
-    signup: async (_, { name, email, password, bio }) => {
+  signup: async (_parent, { name, email, password, bio }) => {
       const user = await prisma.user.create({
         data: {
           name,
@@ -39,7 +39,7 @@ export const resolvers = {
         user,
       };
     },
-    signin: async (_, { email, password }) => {
+  signin: async (_parent, { email }) => {
       const user = await prisma.user.findUnique({
         where: { email },
       });
