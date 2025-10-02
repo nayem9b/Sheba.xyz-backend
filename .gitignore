@@ -4,3 +4,7 @@ node_modules
 configmap.yaml
 secret.yaml
 *.tfvars
+/.terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
