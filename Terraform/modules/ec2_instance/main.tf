@@ -5,17 +5,16 @@ provider "aws" {
 
 module "sg" {
   source = "terraform-aws-modules/security-group/aws"
-
   name        = "sheba-backend-sg"
   description = "Security group for netflix clone server"
-  vpc_id      = var.
+  vpc_id      = var.vpc_id
 
   ingress_with_cidr_blocks = [
     {
-      from_port   = 8080
-      to_port     = 8080
+      from_port   = 3333
+      to_port     = 3333
       protocol    = "tcp"
-      description = "Jenkins port"
+      description = "Sheba port"
       cidr_blocks = "0.0.0.0/0"
     },
     {
@@ -47,3 +46,48 @@ module "sg" {
       cidr_blocks = "0.0.0.0/0"
     }
   ]
+    egress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "All traffic"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+    tags = {
+        Terraform   = "true"
+        Environment = "dev"
+    }
+}
+
+
+module "ec2_instance" {
+  source = "terraform-aws-modules/ec2-instance/aws"
+
+  name = "sheba-server"
+
+  instance_type          = var.instance_type
+  ami                    = var.ami
+  key_name               = var.key_pair
+  monitoring             = true
+  vpc_security_group_ids = [module.sg.vpc_security_group_ids]
+  subnet_id              = var.subnet_id
+  user_data              = file("userdata.sh")
+  root_block_device = [
+    { volume_size = 25
+      volume_type = "gp3"
+    }
+  ]
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+    Name        = "sheba-server"
+  }
+}
+
+resource "aws_eip" "eip" {
+  instance = module.ec2_instance.id[0]
+  domain   = "vpc"
+}
