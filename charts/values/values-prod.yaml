@@ -1,4 +1,4 @@
-replicaCount: 3
+hyperland for linux mintreplicaCount: 3
 
 resources:
   requests:
@@ -7,3 +7,4 @@ resources:
   limits:
     cpu: "1"
     memory: "2Gi"
+zen.theme.content-element-separation
