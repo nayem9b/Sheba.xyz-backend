@@ -5,11 +5,18 @@ import { IPaginationOptions } from "../../constants/pagination";
 import { IGenericResponse } from "../../interface/common";
 import { paginationHelpers } from "../../helpers/paginationHelper";
 import { IServicesFilter, serviceSearchableFields } from "./services.constant";
+import { publishServiceCreated } from "../../messaging/publishers/serviceCreatedPublisher";
 
 export const addServiceToDB = async (data: Services): Promise<Services> => {
-  const result = prisma.services.create({
+  const result = await prisma.services.create({
     data,
   });
+  
+  // Publish Kafka event (non-blocking)
+  publishServiceCreated(result).catch((err) => 
+    console.error('Kafka publish failed:', err)
+  );
+  
   return result;
 };
 

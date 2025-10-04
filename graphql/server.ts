@@ -6,6 +6,7 @@ import { resolvers } from "./src/resolvers";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { json } from "body-parser";
+import { startServiceCreatedConsumer, stopServiceCreatedConsumer } from "./src/consumer";
 
 const prisma = new PrismaClient();
 
@@ -16,6 +17,14 @@ interface Context {
 }
 
 async function startServer() {
+  // Initialize Kafka consumer
+  try {
+    await startServiceCreatedConsumer();
+  } catch (error) {
+    console.error('❌ Failed to initialize Kafka consumer:', error);
+    console.log('⚠️  Continuing without Kafka consumer - events will not be consumed');
+  }
+
   const app = express();
   
   // Setup CORS and JSON parsing
@@ -78,4 +87,17 @@ async function startServer() {
 startServer().catch((error) => {
   console.error('Failed to start GraphQL server:', error);
   process.exit(1);
+});
+
+// Graceful shutdown handlers
+process.on('SIGINT', async () => {
+  console.log('\n🛑 Received SIGINT, shutting down GraphQL server gracefully...');
+  await stopServiceCreatedConsumer();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('\n🛑 Received SIGTERM, shutting down GraphQL server gracefully...');
+  await stopServiceCreatedConsumer();
+  process.exit(0);
 });

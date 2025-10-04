@@ -71,6 +71,9 @@ const envVarsZodSchema = z.object({
   JWT_REFRESH_EXPIRES_IN: z.string(),
   AWS_ACCESS_ID: z.string(),
   AWS_ACCESS_KEY: z.string(),
+  KAFKA_CLIENT_ID: z.string().default("sheba-server"),
+  KAFKA_BROKERS: z.string().default("localhost:29092"),
+  KAFKA_SERVICES_CREATED_TOPIC: z.string().default("services.created.v1"),
 });
 
 const envVars = envVarsZodSchema.parse(process.env);
@@ -93,5 +96,12 @@ export default {
     storePass: envVars.STORE_PASS,
     sslPaymentUrl: envVars.SSL_BASE_PAYMENT_URL,
     sslValidationUrl: envVars.SSL_BASE_VALIDATION_URL,
+  },
+  kafka: {
+    clientId: envVars.KAFKA_CLIENT_ID,
+    brokers: envVars.KAFKA_BROKERS.split(','),
+    topics: {
+      serviceCreated: envVars.KAFKA_SERVICES_CREATED_TOPIC,
+    },
   },
 };
