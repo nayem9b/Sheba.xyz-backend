@@ -57,16 +57,6 @@ export const typeDefs = `#graphql
     Services: [Services!]!
     }
 
-    type Services{
-    id: ID!
-    name: String!
-    price: Int!
-    details: String!
-    image: String!
-    categoryId: String!
-    rating: String!
-    } 
-
 type Services {
   id: ID!
   name: String!

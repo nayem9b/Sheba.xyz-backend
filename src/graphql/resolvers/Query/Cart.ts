@@ -1,7 +1,5 @@
-import prisma from "../../../shared/prisma";
-
 export const Cart = {
-  cartItems: async (parent: any, args: { userId: string }) => {
+  cartItems: async (parent: any, args: { userId: string }, { prisma }: any) => {
     return await prisma.myCart.findMany({
       where: {
         userId: args.userId,

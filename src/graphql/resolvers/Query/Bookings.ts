@@ -1,7 +1,5 @@
-import prisma from "../../../shared/prisma";
-
 export const Bookings = {
-  bookings: async () => {
+  bookings: async (parent: any, args: any, { prisma }: any) => {
     return await prisma.booking.findMany({
       include: {
         service: {
@@ -16,7 +14,7 @@ export const Bookings = {
     });
   },
 
-  userBookings: async (parent: any, args: { userId: string }) => {
+  userBookings: async (parent: any, args: { userId: string }, { prisma }: any) => {
     return await prisma.booking.findMany({
       where: {
         userId: args.userId,
@@ -34,7 +32,7 @@ export const Bookings = {
     });
   },
 
-  booking: async (parent: any, args: { id: string }) => {
+  booking: async (parent: any, args: { id: string }, { prisma }: any) => {
     return await prisma.booking.findUnique({
       where: {
         id: args.id,

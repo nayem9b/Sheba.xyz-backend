@@ -1,7 +1,5 @@
-import prisma from "../../../shared/prisma";
-
 export const Reviews = {
-  reviews: async () => {
+  reviews: async (parent: any, args: any, { prisma }: any) => {
     return await prisma.reviewAndRating.findMany({
       include: {
         service: {
@@ -16,7 +14,7 @@ export const Reviews = {
     });
   },
 
-  serviceReviews: async (parent: any, args: { serviceId: string }) => {
+  serviceReviews: async (parent: any, args: { serviceId: string }, { prisma }: any) => {
     return await prisma.reviewAndRating.findMany({
       where: {
         servicesId: args.serviceId,

@@ -1,4 +1,3 @@
-import prisma from "../../../shared/prisma";
 import { Services } from "./Services";
 import { Bookings } from "./Bookings";
 import { Reviews } from "./Reviews";
@@ -8,11 +7,11 @@ import { Feedback } from "./Feedback";
 
 export const Query = {
   // User queries
-  users: async () => {
+  users: async (parent: any, args: any, { prisma }: any) => {
     return await prisma.user.findMany();
   },
 
-  user: async (parent: any, args: { id: string }) => {
+  user: async (parent: any, args: { id: string }, { prisma }: any) => {
     return await prisma.user.findUnique({
       where: {
         id: args.id,
@@ -21,11 +20,11 @@ export const Query = {
   },
 
   // Category queries
-  categories: async () => {
+  categories: async (parent: any, args: any, { prisma }: any) => {
     return await prisma.category.findMany();
   },
 
-  category: async (parent: any, args: { id: string }) => {
+  category: async (parent: any, args: { id: string }, { prisma }: any) => {
     return await prisma.category.findUnique({
       where: {
         id: args.id,

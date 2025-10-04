@@ -24,6 +24,15 @@ query GetAllUsers {
   }
 }
 
+#get Cart Items
+query getCartItems($userId: ID!) {
+ cartItems(userId: $userId) {
+   service {
+     name
+   }
+ }
+}
+
 # Get a specific user by ID
 query GetUser($id: ID!) {
   user(id: $id) {

@@ -1,7 +1,5 @@
-import prisma from "../../../shared/prisma";
-
 export const Services = {
-  services: async () => {
+  services: async (parent: any, args: any, { prisma }: any) => {
     return await prisma.services.findMany({
       include: {
         category: true,
@@ -12,7 +10,7 @@ export const Services = {
     });
   },
 
-  service: async (parent: any, args: { id: string }) => {
+  service: async (parent: any, args: { id: string }, { prisma }: any) => {
     return await prisma.services.findUnique({
       where: {
         id: args.id,
@@ -26,7 +24,7 @@ export const Services = {
     });
   },
 
-  servicesByCategory: async (parent: any, args: { categoryId: string }) => {
+  servicesByCategory: async (parent: any, args: { categoryId: string }, { prisma }: any) => {
     return await prisma.services.findMany({
       where: {
         categoryId: args.categoryId,
