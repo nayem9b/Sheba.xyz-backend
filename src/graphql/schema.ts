@@ -1,8 +1,23 @@
 export const typeDefs = `#graphql
     type Query {
         me: User
-        category: [Category]
         users: [User]
+        user(id: ID!): User
+        categories: [Category]
+        category(id: ID!): Category
+        services: [Services]
+        service(id: ID!): Services
+        servicesByCategory(categoryId: ID!): [Services]
+        bookings: [Booking]
+        userBookings(userId: ID!): [Booking]
+        booking(id: ID!): Booking
+        reviews: [ReviewAndRating]
+        serviceReviews(serviceId: ID!): [ReviewAndRating]
+        cartItems(userId: ID!): [MyCart]
+        contents: [Content]
+        content(id: ID!): Content
+        feedbacks: [Feedback]
+        feedback(id: ID!): Feedback
         posts: [Post]
         profile(userId: ID!): Profile
     }
@@ -136,8 +151,33 @@ type ReviewAndRating {
         id: ID!
         name: String!
         email: String!
+        role: Role!
+        contactNo: String
+        address: String
+        profileImg: String!
         createdAt: String!
         posts: [Post]
+        bookings: [Booking]
+        cartItems: [MyCart]
+    }
+
+    type Content {
+        id: ID!
+        heading: String!
+        image: String!
+        content: String!
+    }
+
+    type Feedback {
+        id: ID!
+        email: String!
+        feedback: String!
+    }
+
+    enum Role {
+        superadmin
+        admin
+        customer
     }
 
     type Profile {
