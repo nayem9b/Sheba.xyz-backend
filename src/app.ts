@@ -1,5 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
+import path from "path";
 import router from "./routes/route";
 import { gauge, httpRequestCounter, requestDurationHistogram, requestDurationSummary } from "./metrics/metrics_utils";
 const promClient = require('prom-client');
@@ -9,6 +10,7 @@ const app: Application = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '../public')));
 app.use("/api/v1", router);
 
 
@@ -45,6 +47,20 @@ app.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
 app.get("/health", async (req: Request, res: Response, next: NextFunction) => {
   res.status(200).send("Server is healthy");
+});
+
+// GraphQL endpoint info
+app.get("/api/graphql", async (req: Request, res: Response, next: NextFunction) => {
+  res.json({
+    message: "GraphQL API is available",
+    endpoint: "/graphql",
+    playground: "Visit /graphql in your browser for GraphQL Playground",
+    queries: {
+      users: "query { users { id name email role } }",
+      categories: "query { categories { id title image } }",
+      services: "query { services { id name price details } }"
+    }
+  });
 });
 
 

@@ -1,5 +1,7 @@
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
+import { expressMiddleware } from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { createServer } from "http";
 import app from "./app";
 import config from "./config";
 import { Prisma, PrismaClient } from "@prisma/client";
@@ -13,25 +15,33 @@ interface Context {
 }
 
 const main = async () => {
+  const httpServer = createServer(app);
+  
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
-    context: async ({ req }): Promise<Context> => {
-      return {
-        prisma,
-      };
-    },
-  });
+  await server.start();
 
-  app.listen(config.port, () => {
-    console.log(`Server is running on port ${config.port} `);
-  });
+  // Apply GraphQL middleware to Express app
+  app.use(
+    '/graphql',
+    expressMiddleware(server, {
+      context: async ({ req }): Promise<Context> => {
+        return {
+          prisma,
+        };
+      },
+    })
+  );
 
-  console.log(`🚀 Apollo GraphQL is ready at ${url}`);
+  // Start the server
+  httpServer.listen(config.port, () => {
+    console.log(`🚀 Server is running on port ${config.port}`);
+    console.log(`🚀 GraphQL API is available at http://localhost:${config.port}/graphql`);
+  });
 };
 
 main();

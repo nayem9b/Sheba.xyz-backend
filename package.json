@@ -9,7 +9,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "postinstall": "prisma generate",
-    "lint": "eslint . --ext .ts,.js"
+    "lint": "eslint . --ext .ts,.js",
+    "seed": "ts-node ./src/scripts/seedData.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.10.0",
