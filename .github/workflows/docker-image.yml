@@ -45,8 +45,8 @@ jobs:
 
       - name: Run Gitleaks Scan
         run: |
-          gitleaks detect --source ./client --exit-code 1
-          gitleaks detect --source ./api --exit-code 1
+          gitleaks detect --source ./ --exit-code 1
+
 
   trivy_fs_scan:
     runs-on: ubuntu-latest
