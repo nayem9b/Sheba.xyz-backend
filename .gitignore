@@ -8,3 +8,5 @@ secret.yaml
 .terraform/
 .terraform.lock.hcl
 *.tfstate
+__pycache__
+/myenv

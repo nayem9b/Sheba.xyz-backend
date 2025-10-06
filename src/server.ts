@@ -7,7 +7,7 @@ import config from "./config";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import { typeDefs } from "./graphql/schema";
-import { resolvers } from "./graphql/resolvers";
+// import { resolvers } from "./graphql/resolvers";
 import { initKafka, gracefulKafkaShutdown } from "./messaging/kafka";
 
 export const prisma = new PrismaClient();
@@ -26,30 +26,30 @@ const main = async () => {
 
   const httpServer = createServer(app);
   
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  });
+  // const server = new ApolloServer({
+  //   typeDefs,
+  //   resolvers,
+  //   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  // });
 
-  await server.start();
+  // await server.start();
 
   // Apply GraphQL middleware to Express app
-  app.use(
-    '/graphql',
-    expressMiddleware(server, {
-      context: async ({ req }): Promise<Context> => {
-        return {
-          prisma,
-        };
-      },
-    })
-  );
+  // app.use(
+  //   '/graphql',
+  //   expressMiddleware(server, {
+  //     context: async ({ req }): Promise<Context> => {
+  //       return {
+  //         prisma,
+  //       };
+  //     },
+  //   })
+  // );
 
   // Start the server
   httpServer.listen(config.port, () => {
     console.log(`🚀 Server is running on port ${config.port}`);
-    console.log(`🚀 GraphQL API is available at http://localhost:${config.port}/graphql`);
+    // console.log(`🚀 GraphQL API is available at http://localhost:${config.port}/graphql`);
   });
 };
 
