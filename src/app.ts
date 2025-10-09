@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import path from "path";
 import router from "./routes/route";
@@ -41,16 +41,16 @@ app.get('/metrics', async (req, res) => {
     res.end(await promClient.register.metrics());
 });
 
-app.get("/", async (req: Request, res: Response, next: NextFunction) => {
+app.get("/", async (req: Request, res: Response) => {
   res.send("Welcome to Sheba.xyz");
 });
 
-app.get("/health", async (req: Request, res: Response, next: NextFunction) => {
+app.get("/health", async (req: Request, res: Response) => {
   res.status(200).send("Server is healthy");
 });
 
 // GraphQL endpoint info
-app.get("/api/graphql", async (req: Request, res: Response, next: NextFunction) => {
+app.get("/api/graphql", async (req: Request, res: Response) => {
   res.json({
     message: "GraphQL API is available",
     endpoint: "/graphql",

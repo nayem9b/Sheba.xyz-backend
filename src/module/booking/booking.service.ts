@@ -1,4 +1,4 @@
-import { Booking, ReviewAndRating, Services } from "@prisma/client";
+import { Booking} from "@prisma/client";
 import prisma from "../../shared/prisma";
 export const addBookingToDB = async (data: Booking): Promise<Booking> => {
   const result = prisma.booking.create({

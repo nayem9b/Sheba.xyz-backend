@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
-import { decodedToken } from "../../helpers/jwtHelpers";
+// import { decodedToken } from "../../helpers/jwtHelpers";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
 import {
@@ -15,7 +15,7 @@ import {
 } from "./services.service";
 import pick from "../../shared/pick";
 import { servicesFilterableFields } from "./services.constant";
-import { paginationFields } from "../../constants/pagination";
+// import { paginationFields } from "../../constants/pagination";
 
 export const postService = catchAsync(async (req: Request, res: Response) => {
   // const decodedToken = (token: string) => {
@@ -34,7 +34,7 @@ export const postService = catchAsync(async (req: Request, res: Response) => {
 export const getAllServiceController = catchAsync(
   async (req: Request, res: Response) => {
     const filters = pick(req.query, servicesFilterableFields);
-    const options = pick(req.query, paginationFields);
+    // const options = pick(req.query, paginationFields);
     const result = await getAllServiceFromDBService(filters);
     sendResponse(res, {
       statusCode: httpStatus.OK,

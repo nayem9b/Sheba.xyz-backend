@@ -32,7 +32,7 @@ export const loginUser = catchAsync(async (req: Request, res: Response) => {
   console.log(result?.accessToken, result?.refreshToken);
   const accessToken = result?.accessToken;
 
-  const refreshToken = result?.refreshToken;
+  // const refreshToken = result?.refreshToken;
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

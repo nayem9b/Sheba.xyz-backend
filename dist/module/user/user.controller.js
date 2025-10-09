@@ -43,7 +43,7 @@ exports.loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
     const result = yield (0, user_service_1.loginUserToDB)(loginData);
     console.log(result === null || result === void 0 ? void 0 : result.accessToken, result === null || result === void 0 ? void 0 : result.refreshToken);
     const accessToken = result === null || result === void 0 ? void 0 : result.accessToken;
-    const refreshToken = result === null || result === void 0 ? void 0 : result.refreshToken;
+    // const refreshToken = result?.refreshToken;
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

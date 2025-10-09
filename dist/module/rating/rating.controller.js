@@ -16,6 +16,10 @@ exports.getReviewByServiceIdController = exports.getAllReviewController = export
 const catchAsync_1 = __importDefault(require("../../shared/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../shared/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
+// import {
+//   addServiceToDB,
+//   getAllServiceFromDBService,
+// } from "../services/services.service";
 const rating_service_1 = require("./rating.service");
 exports.postRating = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield (0, rating_service_1.addRatingToDB)(req.body);

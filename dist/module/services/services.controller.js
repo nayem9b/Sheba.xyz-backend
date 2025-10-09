@@ -14,12 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteServiceController = exports.updateServiceController = exports.getSingleServiceController = exports.getAvailableServiceController = exports.getUpcomingServiceController = exports.getServiceByCategoryIdController = exports.getAllServiceController = exports.postService = void 0;
 const catchAsync_1 = __importDefault(require("../../shared/catchAsync"));
+// import { decodedToken } from "../../helpers/jwtHelpers";
 const sendResponse_1 = __importDefault(require("../../shared/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
 const services_service_1 = require("./services.service");
 const pick_1 = __importDefault(require("../../shared/pick"));
 const services_constant_1 = require("./services.constant");
-const pagination_1 = require("../../constants/pagination");
+// import { paginationFields } from "../../constants/pagination";
 exports.postService = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // const decodedToken = (token: string) => {
     //   return jwtDecode(token);
@@ -35,7 +36,7 @@ exports.postService = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 }));
 exports.getAllServiceController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, services_constant_1.servicesFilterableFields);
-    const options = (0, pick_1.default)(req.query, pagination_1.paginationFields);
+    // const options = pick(req.query, paginationFields);
     const result = yield (0, services_service_1.getAllServiceFromDBService)(filters);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,

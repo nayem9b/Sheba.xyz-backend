@@ -12,13 +12,60 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.prisma = void 0;
+const http_1 = require("http");
 const app_1 = __importDefault(require("./app"));
 const config_1 = __importDefault(require("./config"));
-function bootstrap() {
-    return __awaiter(this, void 0, void 0, function* () {
-        app_1.default.listen(config_1.default.port, () => {
-            console.log(`Server is running on port ${config_1.default.port} `);
-        });
+const client_1 = require("@prisma/client");
+// import { DefaultArgs } from "@prisma/client/runtime/library";
+// import { typeDefs } from "./graphql/schema";
+const kafka_1 = require("./messaging/kafka");
+exports.prisma = new client_1.PrismaClient();
+// interface Context {
+//   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
+// }
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    // Initialize Kafka
+    try {
+        yield (0, kafka_1.initKafka)();
+    }
+    catch (error) {
+        console.error('❌ Failed to initialize Kafka:', error);
+        console.log('⚠️  Continuing without Kafka - events will not be published');
+    }
+    const httpServer = (0, http_1.createServer)(app_1.default);
+    // const server = new ApolloServer({
+    //   typeDefs,
+    //   resolvers,
+    //   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    // });
+    // await server.start();
+    // Apply GraphQL middleware to Express app
+    // app.use(
+    //   '/graphql',
+    //   expressMiddleware(server, {
+    //     context: async ({ req }): Promise<Context> => {
+    //       return {
+    //         prisma,
+    //       };
+    //     },
+    //   })
+    // );
+    // Start the server
+    httpServer.listen(config_1.default.port, () => {
+        console.log(`🚀 Server is running on port ${config_1.default.port}`);
+        // console.log(`🚀 GraphQL API is available at http://localhost:${config.port}/graphql`);
     });
-}
-bootstrap();
+});
+main();
+// Graceful shutdown handlers
+process.on('SIGINT', () => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('\n🛑 Received SIGINT, shutting down gracefully...');
+    yield (0, kafka_1.gracefulKafkaShutdown)();
+    process.exit(0);
+}));
+process.on('SIGTERM', () => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('\n🛑 Received SIGTERM, shutting down gracefully...');
+    yield (0, kafka_1.gracefulKafkaShutdown)();
+    process.exit(0);
+}));

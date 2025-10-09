@@ -26,7 +26,8 @@ describe('API Routes Registration', () => {
   describe('Route Registration Tests', () => {
     routesToTest.forEach(route => {
       it(`should have ${route.method} ${route.path} registered`, async () => {
-        const response = await request(app)[route.method.toLowerCase()](route.path);
+        const method = route.method.toLowerCase() as 'get' | 'post' | 'put' | 'delete' | 'patch';
+        const response = await request(app)[method](route.path);
         
         // We expect either a 200 OK, 401 Unauthorized, or 403 Forbidden
         // But not a 404 Not Found, which would indicate the route doesn't exist

@@ -1,6 +1,5 @@
 import { MyCart } from "@prisma/client";
 import prisma from "../../shared/prisma";
-import clerk from "@clerk/clerk-sdk-node";
 import "dotenv/config";
 
 export const addCartToDB = async (data: MyCart): Promise<MyCart> => {

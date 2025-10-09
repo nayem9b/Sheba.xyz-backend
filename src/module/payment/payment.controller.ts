@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
 import { PaymentService } from "./payment.service";
 
-const initPayment = async (req: Request, res: Response, next: NextFunction) => {
+const initPayment = async (req: Request, res: Response) => {
   const result = await PaymentService.initPayment(req.body);
   sendResponse(res, {
     success: true,

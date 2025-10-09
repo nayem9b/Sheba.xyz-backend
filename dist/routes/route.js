@@ -12,7 +12,22 @@ const booking_route_1 = require("../module/booking/booking.route");
 const myCart_route_1 = require("../module/myCart/myCart.route");
 const feedback_route_1 = require("../module/feedback/feedback.route");
 const content_route_1 = require("../module/content/content.route");
+const payment_routes_1 = require("../module/payment/payment.routes");
+const metrics_utils_1 = require("../metrics/metrics_utils");
+// const promClient = require('prom-client');
 const router = express_1.default.Router();
+router.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = (Date.now() - start) / 1000;
+        const { method, originalUrl } = req;
+        const statusCode = res.statusCode;
+        metrics_utils_1.httpRequestCounter.labels({ method, path: originalUrl, status_code: statusCode }).inc();
+        metrics_utils_1.requestDurationHistogram.labels({ method, path: originalUrl, status_code: statusCode }).observe(duration);
+        metrics_utils_1.requestDurationSummary.labels({ method, path: originalUrl, status_code: statusCode }).observe(duration);
+    });
+    next();
+});
 const moduleRoutes = [
     {
         path: "/",
@@ -45,6 +60,10 @@ const moduleRoutes = [
     {
         path: "/",
         route: content_route_1.contentRoutes,
+    },
+    {
+        path: "/",
+        route: payment_routes_1.paymentRoutes,
     },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

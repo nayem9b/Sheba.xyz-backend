@@ -48,7 +48,7 @@ const initPayment = async (payload: any) => {
 
     return response.data;
   } catch (err) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Payment error");
+    throw new ApiError(httpStatus.BAD_REQUEST, `Payment Error ${err}`);
   }
 };
 
@@ -61,7 +61,7 @@ const validate = async (data: any) => {
     console.log(response);
     return response.data;
   } catch (err) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Payment error");
+    throw new ApiError(httpStatus.BAD_REQUEST, `Payment Error ${err}`);
   }
 };
 

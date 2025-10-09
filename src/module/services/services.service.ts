@@ -1,9 +1,9 @@
 import { Prisma, Services } from "@prisma/client";
 import prisma from "../../shared/prisma";
 
-import { IPaginationOptions } from "../../constants/pagination";
-import { IGenericResponse } from "../../interface/common";
-import { paginationHelpers } from "../../helpers/paginationHelper";
+// import { IPaginationOptions } from "../../constants/pagination";
+// import { IGenericResponse } from "../../interface/common";
+// import { paginationHelpers } from "../../helpers/paginationHelper";
 import { IServicesFilter, serviceSearchableFields } from "./services.constant";
 import { publishServiceCreated } from "../../messaging/publishers/serviceCreatedPublisher";
 
@@ -61,9 +61,9 @@ export const getAllServiceFromDBService = async (
       category: true,
     },
   });
-  const total: number = await prisma.services.count({
-    where: whereConditions,
-  });
+  // const total: number = await prisma.services.count({
+  //   where: whereConditions,
+  // });
   return result;
 };
 

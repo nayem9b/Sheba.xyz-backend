@@ -1,5 +1,5 @@
 import express from "express";
-import { loginUser } from "../user/user.controller";
+// import { loginUser } from "../user/user.controller";
 import {
   postService,
   getAllServiceController,

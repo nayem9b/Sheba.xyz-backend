@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.shebaServices = void 0;
 const express_1 = __importDefault(require("express"));
+// import { loginUser } from "../user/user.controller";
 const services_controller_1 = require("./services.controller");
 const router = express_1.default.Router();
 router.post("/create-service", services_controller_1.postService);

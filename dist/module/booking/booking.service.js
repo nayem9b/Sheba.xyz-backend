@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBookingFromDB = exports.updateBookingFromDB = exports.getAllBookingsFromDB = exports.getBookingByidFromDB = exports.getBookingByUseridFromDB = exports.addBookingToDB = void 0;
+exports.deleteBookingFromDB = exports.updateBookingFromDB = exports.getAllRejectedBookingsFromDB = exports.getAllCanceledBookingsFromDB = exports.getAllDeliveredBookingsFromDB = exports.getAllPendingBookingsFromDB = exports.getAllBookingsFromDB = exports.getBookingByidFromDB = exports.getBookingByUseridFromDB = exports.addBookingToDB = void 0;
 const prisma_1 = __importDefault(require("../../shared/prisma"));
 const addBookingToDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const result = prisma_1.default.booking.create({
@@ -61,6 +61,42 @@ const getAllBookingsFromDB = () => __awaiter(void 0, void 0, void 0, function* (
     return result;
 });
 exports.getAllBookingsFromDB = getAllBookingsFromDB;
+const getAllPendingBookingsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.booking.findMany({
+        where: {
+            status: "pending",
+        },
+    });
+    return result;
+});
+exports.getAllPendingBookingsFromDB = getAllPendingBookingsFromDB;
+const getAllDeliveredBookingsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.booking.findMany({
+        where: {
+            status: "delivered",
+        },
+    });
+    return result;
+});
+exports.getAllDeliveredBookingsFromDB = getAllDeliveredBookingsFromDB;
+const getAllCanceledBookingsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.booking.findMany({
+        where: {
+            status: "canceled",
+        },
+    });
+    return result;
+});
+exports.getAllCanceledBookingsFromDB = getAllCanceledBookingsFromDB;
+const getAllRejectedBookingsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.booking.findMany({
+        where: {
+            status: "rejected",
+        },
+    });
+    return result;
+});
+exports.getAllRejectedBookingsFromDB = getAllRejectedBookingsFromDB;
 const updateBookingFromDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.default.booking.update({
         where: {

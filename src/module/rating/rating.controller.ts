@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
-import {
-  addServiceToDB,
-  getAllServiceFromDBService,
-} from "../services/services.service";
+// import {
+//   addServiceToDB,
+//   getAllServiceFromDBService,
+// } from "../services/services.service";
 import {
   addRatingToDB,
   getAllReviewsFromDBService,

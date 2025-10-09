@@ -1,5 +1,4 @@
 import express from "express";
-import { addFeedbackController } from "../feedback/feedback.controller";
 import {
   addContentController,
   deleteContentController,

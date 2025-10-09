@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUserFromDB = exports.deleteUserFromDB = exports.getSingleDBUserFromDB = exports.getSingleUserFromDB = exports.getAllUsersFromDB = exports.loginUserToDB = exports.signUpUserTODB = void 0;
 const prisma_1 = __importDefault(require("../../shared/prisma"));
-const http_status_1 = __importDefault(require("http-status"));
+// import httpStatus from "http-status";
 const jwtHelpers_1 = require("../../helpers/jwtHelpers");
 const config_1 = __importDefault(require("../../config"));
 const signUpUserTODB = (data) => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,24 +26,25 @@ const signUpUserTODB = (data) => __awaiter(void 0, void 0, void 0, function* () 
 exports.signUpUserTODB = signUpUserTODB;
 const loginUserToDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload;
-    const isUserExist = yield prisma_1.default.user.findFirstOrThrow({
+    if (!email || !password) {
+        throw new Error('Email and password are required');
+    }
+    const user = yield prisma_1.default.user.findFirst({
         where: {
-            email: email,
-            password: password,
+            email,
+            password,
         },
     });
-    if (!isUserExist) {
-        http_status_1.default.NOT_FOUND, "User does not exist";
+    if (!user) {
+        throw new Error('Invalid email or password');
     }
-    else {
-        const { id: userId, role } = isUserExist;
-        const accessToken = (0, jwtHelpers_1.createToken)({ userId, role }, config_1.default.jwt.access_secret, config_1.default.jwt.access_expires_in);
-        const refreshToken = (0, jwtHelpers_1.createToken)({ userId, role }, config_1.default.jwt.refresh_secret, config_1.default.jwt.refresh_expires_in);
-        return {
-            accessToken,
-            refreshToken,
-        };
-    }
+    const { id: userId, role } = user;
+    const accessToken = (0, jwtHelpers_1.createToken)({ userId, role }, config_1.default.jwt.access_secret, config_1.default.jwt.access_expires_in);
+    const refreshToken = (0, jwtHelpers_1.createToken)({ userId, role }, config_1.default.jwt.refresh_secret, config_1.default.jwt.refresh_expires_in);
+    return {
+        accessToken,
+        refreshToken,
+    };
 });
 exports.loginUserToDB = loginUserToDB;
 const getAllUsersFromDB = () => __awaiter(void 0, void 0, void 0, function* () {

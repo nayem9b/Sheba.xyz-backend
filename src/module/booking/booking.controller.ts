@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
-import { addCategoryToDB } from "../category/category.service";
 import httpStatus from "http-status";
 import sendResponse from "../../shared/sendResponse";
 import {
@@ -15,11 +14,6 @@ import {
   getAllCanceledBookingsFromDB,
   getAllRejectedBookingsFromDB,
 } from "./booking.service";
-import {
-  getSingleServiceByCategoryIDFromDB,
-  deleteServiceFromDB,
-  updateServiceFromDB,
-} from "../services/services.service";
 export const addBookingController = catchAsync(
   async (req: Request, res: Response) => {
     const result = await addBookingToDB(req.body);

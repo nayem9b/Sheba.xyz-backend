@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import prisma from "../../shared/prisma";
-import httpStatus from "http-status";
+// import httpStatus from "http-status";
 import { createToken } from "../../helpers/jwtHelpers";
 import config from "../../config";
 import { Secret } from "jsonwebtoken";
@@ -12,36 +12,41 @@ export const signUpUserTODB = async (data: User): Promise<User> => {
   return result;
 };
 
-export const loginUserToDB = async (payload: User) => {
+export const loginUserToDB = async (payload: Partial<User>) => {
   const { email, password } = payload;
+  
+  if (!email || !password) {
+    throw new Error('Email and password are required');
+  }
 
-  const isUserExist = await prisma.user.findFirstOrThrow({
+  const user = await prisma.user.findFirst({
     where: {
-      email: email,
-      password: password,
+      email,
+      password,
     },
   });
 
-  if (!isUserExist) {
-    httpStatus.NOT_FOUND, "User does not exist";
-  } else {
-    const { id: userId, role } = isUserExist;
-    const accessToken: any | undefined = createToken(
-      { userId, role },
-      config.jwt.access_secret as Secret,
-      config.jwt.access_expires_in as string
-    );
-    const refreshToken: any | undefined = createToken(
-      { userId, role },
-      config.jwt.refresh_secret as Secret,
-      config.jwt.refresh_expires_in as string
-    );
-
-    return {
-      accessToken,
-      refreshToken,
-    };
+  if (!user) {
+    throw new Error('Invalid email or password');
   }
+
+  const { id: userId, role } = user;
+  const accessToken = createToken(
+    { userId, role },
+    config.jwt.access_secret as Secret,
+    config.jwt.access_expires_in as string
+  );
+  
+  const refreshToken = createToken(
+    { userId, role },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
 export const getAllUsersFromDB = async () => {

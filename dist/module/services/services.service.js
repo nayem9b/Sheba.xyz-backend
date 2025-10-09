@@ -25,11 +25,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteServiceFromDB = exports.updateServiceFromDB = exports.getAvailableServicesFromDB = exports.getUpcomingServicesFromDB = exports.getSingleServiceFromDB = exports.getSingleServiceByCategoryIDFromDB = exports.getAllServiceFromDBService = exports.addServiceToDB = void 0;
 const prisma_1 = __importDefault(require("../../shared/prisma"));
+// import { IPaginationOptions } from "../../constants/pagination";
+// import { IGenericResponse } from "../../interface/common";
+// import { paginationHelpers } from "../../helpers/paginationHelper";
 const services_constant_1 = require("./services.constant");
+const serviceCreatedPublisher_1 = require("../../messaging/publishers/serviceCreatedPublisher");
 const addServiceToDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = prisma_1.default.services.create({
+    const result = yield prisma_1.default.services.create({
         data,
     });
+    // Publish Kafka event (non-blocking)
+    (0, serviceCreatedPublisher_1.publishServiceCreated)(result).catch((err) => console.error('Kafka publish failed:', err));
     return result;
 });
 exports.addServiceToDB = addServiceToDB;
@@ -66,9 +72,9 @@ const getAllServiceFromDBService = (filters) => __awaiter(void 0, void 0, void 0
             category: true,
         },
     });
-    const total = yield prisma_1.default.services.count({
-        where: whereConditions,
-    });
+    // const total: number = await prisma.services.count({
+    //   where: whereConditions,
+    // });
     return result;
 });
 exports.getAllServiceFromDBService = getAllServiceFromDBService;
@@ -91,6 +97,7 @@ const getSingleServiceFromDB = (id) => __awaiter(void 0, void 0, void 0, functio
         },
         include: {
             category: true,
+            ReviewAndRating: true,
         },
     });
     return result;

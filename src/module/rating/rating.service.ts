@@ -1,4 +1,4 @@
-import { ReviewAndRating, Services } from "@prisma/client";
+import { ReviewAndRating} from "@prisma/client";
 import prisma from "../../shared/prisma";
 export const addRatingToDB = async (
   data: ReviewAndRating

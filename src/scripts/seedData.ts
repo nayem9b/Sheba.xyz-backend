@@ -99,67 +99,67 @@ async function seedData() {
 
     console.log("✅ Services created");
 
-    // Create sample bookings
-    const booking1 = await prisma.booking.upsert({
-      where: { id: "book_001" },
-      update: {},
-      create: {
-        id: "book_001",
-        userId: user1.id,
-        status: "pending",
-        servicesId: service1.id,
-        email: user1.email,
-        name: user1.name,
-        zip: "1200",
-        street: "Dhanmondi, Dhaka",
-        contactNo: 1234567890,
-        time: "10:00 AM",
-        date: "2024-01-15",
-      },
-    });
+    // // Create sample bookings
+    // const booking1 = await prisma.booking.upsert({
+    //   where: { id: "book_001" },
+    //   update: {},
+    //   create: {
+    //     id: "book_001",
+    //     userId: user1.id,
+    //     status: "pending",
+    //     servicesId: service1.id,
+    //     email: user1.email,
+    //     name: user1.name,
+    //     zip: "1200",
+    //     street: "Dhanmondi, Dhaka",
+    //     contactNo: 1234567890,
+    //     time: "10:00 AM",
+    //     date: "2024-01-15",
+    //   },
+    // });
 
-    console.log("✅ Bookings created");
+    // console.log("✅ Bookings created");
 
-    // Create sample reviews
-    const review1 = await prisma.reviewAndRating.upsert({
-      where: { id: "rev_001" },
-      update: {},
-      create: {
-        id: "rev_001",
-        review: "Excellent service! Very professional and thorough cleaning.",
-        rating: 5,
-        servicesId: service1.id,
-        userImage: user1.profileImg,
-        userId: user1.id,
-      },
-    });
+    // // Create sample reviews
+    // const review1 = await prisma.reviewAndRating.upsert({
+    //   where: { id: "rev_001" },
+    //   update: {},
+    //   create: {
+    //     id: "rev_001",
+    //     review: "Excellent service! Very professional and thorough cleaning.",
+    //     rating: 5,
+    //     servicesId: service1.id,
+    //     userImage: user1.profileImg,
+    //     userId: user1.id,
+    //   },
+    // });
 
-    console.log("✅ Reviews created");
+    // console.log("✅ Reviews created");
 
-    // Create sample content
-    const content1 = await prisma.content.upsert({
-      where: { id: "cont_001" },
-      update: {},
-      create: {
-        id: "cont_001",
-        heading: "How to Keep Your Home Clean",
-        image: "https://via.placeholder.com/600x400?text=Home+Cleaning+Tips",
-        content: "Here are some essential tips to keep your home clean and organized...",
-      },
-    });
+    // // Create sample content
+    // const content1 = await prisma.content.upsert({
+    //   where: { id: "cont_001" },
+    //   update: {},
+    //   create: {
+    //     id: "cont_001",
+    //     heading: "How to Keep Your Home Clean",
+    //     image: "https://via.placeholder.com/600x400?text=Home+Cleaning+Tips",
+    //     content: "Here are some essential tips to keep your home clean and organized...",
+    //   },
+    // });
 
-    console.log("✅ Content created");
+    // console.log("✅ Content created");
 
-    // Create sample feedback
-    const feedback1 = await prisma.feedback.upsert({
-      where: { id: "feed_001" },
-      update: {},
-      create: {
-        id: "feed_001",
-        email: "customer@example.com",
-        feedback: "Great platform! Easy to use and excellent service quality.",
-      },
-    });
+    // // Create sample feedback
+    // const feedback1 = await prisma.feedback.upsert({
+    //   where: { id: "feed_001" },
+    //   update: {},
+    //   create: {
+    //     id: "feed_001",
+    //     email: "customer@example.com",
+    //     feedback: "Great platform! Easy to use and excellent service quality.",
+    //   },
+    // });
 
     console.log("✅ Feedback created");
 

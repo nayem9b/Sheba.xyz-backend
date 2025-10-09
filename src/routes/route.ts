@@ -10,8 +10,9 @@ import { contentRoutes } from "../module/content/content.route";
 import { paymentRoutes } from "../module/payment/payment.routes";
 import { httpRequestCounter, requestDurationHistogram, requestDurationSummary } from "../metrics/metrics_utils";
 
-const promClient = require('prom-client');
+// const promClient = require('prom-client');
 const router = express.Router();
+
 
 
 
