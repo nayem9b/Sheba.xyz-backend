@@ -48,7 +48,7 @@ WORKDIR /app
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV PORT=5000
+ENV PORT=3000
 
 # Copy essential runtime assets
 COPY --from=pruner /app/package.json ./
@@ -66,7 +66,9 @@ COPY --from=builder /app/dist ./dist
 RUN find node_modules -type d \( -name "test" -o -name "tests" -o -name "example*" -o -name "docs" \) -exec rm -rf {} + || true
 
 # Expose app port
-EXPOSE 5000
+
+EXPOSE 3000
+EXPOSE 4000
 
 # Healthcheck (optional but recommended)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
@@ -84,4 +86,6 @@ WORKDIR /app
 COPY . .
 RUN yarn install && yarn global add nodemon
 EXPOSE 5000
+EXPOSE 3000
+EXPOSE 4000
 CMD ["yarn", "run", "dev"]
