@@ -17,22 +17,18 @@ const http_1 = require("http");
 const app_1 = __importDefault(require("./app"));
 const config_1 = __importDefault(require("./config"));
 const client_1 = require("@prisma/client");
-// import { DefaultArgs } from "@prisma/client/runtime/library";
-// import { typeDefs } from "./graphql/schema";
-const kafka_1 = require("./messaging/kafka");
 exports.prisma = new client_1.PrismaClient();
 // interface Context {
 //   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
 // }
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     // Initialize Kafka
-    try {
-        yield (0, kafka_1.initKafka)();
-    }
-    catch (error) {
-        console.error('❌ Failed to initialize Kafka:', error);
-        console.log('⚠️  Continuing without Kafka - events will not be published');
-    }
+    // try {
+    //   await initKafka();
+    // } catch (error) {
+    //   console.error('❌ Failed to initialize Kafka:', error);
+    //   console.log('⚠️  Continuing without Kafka - events will not be published');
+    // }
     const httpServer = (0, http_1.createServer)(app_1.default);
     // const server = new ApolloServer({
     //   typeDefs,
@@ -58,14 +54,14 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 main();
-// Graceful shutdown handlers
-process.on('SIGINT', () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('\n🛑 Received SIGINT, shutting down gracefully...');
-    yield (0, kafka_1.gracefulKafkaShutdown)();
-    process.exit(0);
-}));
-process.on('SIGTERM', () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('\n🛑 Received SIGTERM, shutting down gracefully...');
-    yield (0, kafka_1.gracefulKafkaShutdown)();
-    process.exit(0);
-}));
+// // Graceful shutdown handlers
+// process.on('SIGINT', async () => {
+//   console.log('\n🛑 Received SIGINT, shutting down gracefully...');
+//   await gracefulKafkaShutdown();
+//   process.exit(0);
+// });
+// process.on('SIGTERM', async () => {
+//   console.log('\n🛑 Received SIGTERM, shutting down gracefully...');
+//   await gracefulKafkaShutdown();
+//   process.exit(0);
+// });

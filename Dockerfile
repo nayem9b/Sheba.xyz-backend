@@ -3,35 +3,33 @@
 # ============================================================
 FROM node:24-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy dependency manifests first (better caching)
 COPY package.json yarn.lock ./
 
-# Install all dependencies (including dev) for build, lint, etc.
+# Install all deps for build
 RUN yarn install --frozen-lockfile --non-interactive --no-progress
 
-# Copy the full source
+# Copy source
 COPY . .
 
-# Run build script (TypeScript / Prisma / etc.)
-# Add your own build pipeline inside package.json
+# Build project
 RUN yarn clean && yarn lint || true && yarn typecheck || true && yarn build
 
+# Generate Prisma client only (no DB required)
+COPY prisma ./prisma
+RUN echo "⚙️ Generating Prisma client..." && npx prisma generate --no-engine
+
 # ============================================================
-# Stage 2 — Pruner (for dependency slimming)
+# Stage 2 — Pruner (Dependency Slimming)
 # ============================================================
 FROM node:24-alpine AS pruner
 
 WORKDIR /app
-
-# Copy dependencies from builder
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/yarn.lock ./
 COPY --from=builder /app/node_modules ./node_modules
 
-# Reinstall only production deps
 RUN yarn install --frozen-lockfile --non-interactive --production=true --prefer-offline && \
     yarn cache clean
 
@@ -40,42 +38,56 @@ RUN yarn install --frozen-lockfile --non-interactive --production=true --prefer-
 # ============================================================
 FROM node:24-alpine AS runner
 
-# Create non-root user for security
 RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 USER nodejs
 
 WORKDIR /app
 
-# Set environment variables
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Copy essential runtime assets
 COPY --from=pruner /app/package.json ./
 COPY --from=pruner /app/yarn.lock ./
 COPY --from=pruner /app/node_modules ./node_modules
-
-# If TypeScript compiled → copy /dist
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
 
-# Optional: if Prisma or migrations needed
-# COPY --from=builder /app/prisma ./prisma
-# RUN npx prisma generate --no-engine
+# ============================================================
+# Safe Prisma Migration Handling
+# ============================================================
+# This script will:
+# 1. Check DB connectivity
+# 2. Run migrations only if DB is reachable
+# 3. Always start the Node app regardless of DB status
 
-# Clean up any dev/test docs, reduce image size
+COPY <<'EOF' ./entrypoint.sh
+#!/bin/sh
+set -e
+
+echo "🔍 Checking database connectivity..."
+if nc -z "${DATABASE_HOST:-postgres.database.svc.cluster.local}" "${DATABASE_PORT:-5432}"; then
+  echo "✅ Database reachable — running Prisma migrations..."
+  npx prisma migrate deploy --schema=./prisma/schema.prisma || echo "⚠️ Prisma migration failed, continuing startup..."
+else
+  echo "⚠️ Database not reachable — skipping migrations."
+fi
+
+echo "🚀 Starting application..."
+exec yarn start
+EOF
+
+RUN chmod +x ./entrypoint.sh
+
+# Cleanup (optional)
 RUN find node_modules -type d \( -name "test" -o -name "tests" -o -name "example*" -o -name "docs" \) -exec rm -rf {} + || true
-
-# Expose app port
 
 EXPOSE 3000
 EXPOSE 4000
 
-# Healthcheck (optional but recommended)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget -qO- http://localhost:5000/health || exit 1
 
-# Final command — Production Start
-CMD ["yarn", "start"]
+CMD ["./entrypoint.sh"]
 
 # ============================================================
 # Stage 4 — Dev Environment (Optional)
